@@ -26,40 +26,45 @@
                             </button></h5>
 
                         <!-- Table with stripped rows -->
-                        <table class="table" id="table-1">
-                            <thead>
-                                <tr>
-                                    <th>Nama Proyek</th>
-                                    <th>Pemberi Tugas</th>
-                                    <th>Manajemen Konstruksi</th>
-                                    <th>Konsultan Perencana</th>
-                                    <th>Kontraktor</th>
-                                    <th>Waktu Mulai</th>
-                                    <th>Waktu Selesai</th>
-                                    <th>Durasi Kontrak</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $item)
+                        <div class="table-responsive">
+                            <table class="table" id="table-1">
+                                <thead>
                                     <tr>
-                                        <td>{{ $item->nama_proyek }}</td>
-                                        <td>{{ $item->pemberi_tugas }}</td>
-                                        <td>{{ $item->manajemen_konstruksi }}</td>
-                                        <td>{{ $item->konsultan_perencana }}</td>
-                                        <td>{{ $item->kontraktor }}</td>
-                                        <td>{{ $item->waktu_pelaksanaan_mulai }}</td>
-                                        <td>{{ $item->waktu_pelaksanaan_berakhir }}</td>
-                                        <td>{{ $item->durasi_kontrak }} Hari</td>
-                                        <td>
-                                            <a onclick="return edit({{ $item->proyek_id }})"
-                                                class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
-                                            <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')" href="{{ url('proyek/delete/' . Crypt::encrypt($item->proyek_id)) }}" class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
-                                        </td>
+                                        <th>Nama Proyek</th>
+                                        <th>Pemberi Tugas</th>
+                                        <th>Manajemen Konstruksi</th>
+                                        <th>Konsultan Perencana</th>
+                                        <th>Kontraktor</th>
+                                        <th>Sub Kontraktor</th>
+                                        <th>Waktu Mulai</th>
+                                        <th>Waktu Selesai</th>
+                                        <th>Durasi Kontrak</th>
+                                        <th>#</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $item)
+                                        <tr>
+                                            <td>{{ $item->nama_proyek }}</td>
+                                            <td>{{ $item->pemberi_tugas }}</td>
+                                            <td>{{ $item->manajemen_konstruksi }}</td>
+                                            <td>{{ $item->konsultan_perencana }}</td>
+                                            <td>{{ $item->kontraktor }}</td>
+                                            <td>{{ $item->sub_kontraktor }}</td>
+                                            <td>{{ $item->waktu_pelaksanaan_mulai }}</td>
+                                            <td>{{ $item->waktu_pelaksanaan_berakhir }}</td>
+                                            <td>{{ $item->durasi_kontrak }} Hari</td>
+                                            <td>
+                                                <a onclick="return edit({{ $item->proyek_id }})"
+                                                    class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
+                                                <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')" href="{{ url('proyek/delete/' . Crypt::encrypt($item->proyek_id)) }}" class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
+                                                <a href="{{ url('proyek/detail/' . Crypt::encrypt($item->proyek_id)) }}" class="btn text-white btn-info"><i class="bi bi-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- End Table with stripped rows -->
 
                     </div>
@@ -106,6 +111,10 @@
                         <input type="text" class="form-control" id="kontraktor" name="kontraktor" required>
                     </div>
                     <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Sub Kontraktor</label>
+                        <input type="text" class="form-control" id="sub_kontraktor" name="sub_kontraktor" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="staticEmail" class="form-label">Waktu Pelaksanaan Mulai</label>
                         <input type="date" class="form-control" id="waktu_pelaksanaan_mulai" name="waktu_pelaksanaan_mulai" required>
                     </div>
@@ -114,13 +123,17 @@
                         <input type="date" class="form-control" id="waktu_pelaksanaan_berakhir" name="waktu_pelaksanaan_berakhir" required>
                     </div>
                     <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Luas Tanah</label>
+                        <input type="tetx" class="form-control" id="luas_tanah" name="luas_tanah" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="staticEmail" class="form-label">Uraian Data</label>
                         <textarea class="form-control"  name="uraian_data" id="" cols="30" rows="10"></textarea>
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="staticEmail" class="form-label">Pro Prof Pic</label>
                         <input type="text" class="form-control" id="pro_prof_pic" name="pro_prof_pic" required>
-                    </div>
+                    </div> --}}
                     <div class="mb-3">
                         <label for="staticEmail" class="form-label">Lokasi</label>
                         <input type="text" class="form-control" id="lokasi" name="lokasi" required>
@@ -161,17 +174,10 @@
 @section('scripts')
 <script>
     function edit(id){
-        // let filter = $(this).attr('id'); 
-        // filter = filter.split("-");
-        // var tfilter = $(this).attr('id');
-        // console.log(id);
         $.ajax({ 
             type : 'get',
             url : "{{ url('proyek/edit')}}/"+id,
-            // data:{'id':id}, 
             success:function(tampil){
-
-                // console.log(tampil); 
                 $('#tampildata').html(tampil);
                 $('#editModal').modal('show');
             } 

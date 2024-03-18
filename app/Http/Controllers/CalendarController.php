@@ -15,20 +15,42 @@ class CalendarController extends Controller
     public function index()
     {
         $data = DB::table('departement')->whereNull('departement.deleted_at')->get();
-        return view('calendar.index', compact('data'));
+        $event = DB::table('event')->whereNull('event.deleted_at')->get();
+        $eventnya = [];
+        foreach($event as $item){
+            $eventnya[] = [
+                'groupId' => $item->event_id,
+                'title' => $item->agenda,
+                'start' => $item->tanggal_awal,
+                'end' => $item->tanggal_akhir,
+            ];
+        }
+        $eventnya = json_encode($eventnya);
+        return view('calendar.index', compact('data','event','eventnya'));
     }
     public function store(Request $request){
         $request->validate([
-            'nama_departement' => ['required', 'string'],
-            'peran' => ['required', 'string'],
+            'agenda' => ['required', 'string'],
+            'tempat_event' => ['required'],
+            'kehadiran' => ['required'],
+            'tanggal_awal' => ['required'],
+            'tanggal_akhir' => ['required'],
         ]);
+        $kehadiran = '|';
+        foreach($request->kehadiran as $item){
+            $kehadiran .= $item.'|';
+        }
+        // dd($kehadiran);
         $data = [
             'created_by' => Auth::user()->id,
             'created_at' => now(),
-            'nama_departement' => $request->nama_departement,
-            'peran' => $request->peran,
+            'agenda' => $request->agenda,
+            'tempat_event' => $request->tempat_event,
+            'kehadiran' => $kehadiran,
+            'tanggal_awal' => $request->tanggal_awal,
+            'tanggal_akhir' => $request->tanggal_akhir,
         ];
-        DB::table('departement')->insert($data);
+        DB::table('event')->insert($data);
 
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
     }
@@ -38,36 +60,31 @@ class CalendarController extends Controller
         // $id = Crypt::decrypt($id);
         // dd($data);
         $text = "Data tidak ditemukan";
-        if($data = DB::select("SELECT * FROM departement WHERE departement_id='$id'")){
-
-            $text = '<div class="mb-3">'.
-                    '<label for="staticEmail" class="form-label">Nama Departement</label>'.
-                    '<input type="text" class="form-control" id="nama_departement" name="nama_departement" value="'.$data[0]->nama_departement.'" required>'.
-                '</div>'.
-                '<div class="mb-3">'.
-                '<label for="staticEmail" class="form-label">Peran</label>'.
-                '<input type="text" class="form-control" id="peran" name="peran" value="'.$data[0]->peran.'" required>'.
-            '</div>'.
-                '<input type="hidden" class="form-control" id="departement_id" name="departement_id" value="'.Crypt::encrypt($data[0]->departement_id) .'" required>';
-        }
-        return $text;
-        // return view('departement.edit');
+        $departement = DB::table('departement')->whereNull('departement.deleted_at')->get();
+        $data = DB::select("SELECT * FROM event WHERE event_id='$id'");
+    // dd($departement);
+        // return $text;
+        return view('calendar.edit', compact('data','departement'));
     }
 
     public function update(Request $request){
         $request->validate([
-            'nama_departement' => ['required', 'string'],
-            'peran' => ['required', 'string'],
+            'agenda' => ['required', 'string'],
+            'tempat_event' => ['required'],
+            'tanggal_awal' => ['required'],
+            'tanggal_akhir' => ['required'],
         ]);
         $data = [
             'updated_by' => Auth::user()->id,
             'updated_at' => now(),
-            'nama_departement' => $request->nama_departement,
-            'peran' => $request->peran,
+            'agenda' => $request->agenda,
+            'tempat_event' => $request->tempat_event,
+            'tanggal_awal' => $request->tanggal_awal,
+            'tanggal_akhir' => $request->tanggal_akhir,
         ];
-        $departement_id = Crypt::decrypt($request->departement_id);
-        $status_departement = "Aktif";
-        DB::table('departement')->where(['departement_id' => $departement_id])->update($data);
+        $event_id = Crypt::decrypt($request->event_id);
+        $status_event = "Aktif";
+        DB::table('event')->where(['event_id' => $event_id])->update($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Ubah!']);
     }
     public function delete($id){
@@ -76,7 +93,7 @@ class CalendarController extends Controller
             'deleted_by' => Auth::user()->id,
             'deleted_at' => now(),
         ];
-        DB::table('departement')->where(['departement_id' => $id])->update($data);
+        DB::table('event')->where(['event_id' => $id])->update($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Hapus!']);
     }
     

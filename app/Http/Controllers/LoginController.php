@@ -39,21 +39,21 @@ class LoginController extends Controller
                 $id = $check_password->id;
                 $user_akses = DB::table('user_akses')->where(['user_id' => $id])->first();
                 // dd($user_akses);
-                if(isset($user_akses->hakakses_id) || $check_password->hakakses_id == 0){
+                if(isset($user_akses->hakakses_id) || $check_password->id == 0){
                     $data_hakakses = "";
                     if(!empty($user_akses->hakakses_id)){
                         $data_hakakses = DB::table('hakakses')->where(['hakakses_id' => $user_akses->hakakses_id])->get();
                     }
-                    if(isset($data_hakakses[0]->menu_id) || $check_password->hakakses_id == 0){
+                    if(isset($data_hakakses[0]->menu_id) || $check_password->id == 0){
                         // dd($check_password);
-                        if($check_password->hakakses_id == 0){
+                        if($check_password->id == 0){
                             $menu_akses = DB::table('menu')->whereNull('deleted_at')->get();
                         }else{
                             $menu_akses = explode ("|", $data_hakakses[0]->menu_id);
                         }
                         foreach($menu_akses as $item)
                         {
-                            if($check_password->hakakses_id == 0){
+                            if($check_password->id == 0){
                                 $data = DB::table('menu')->where(['menu_id' => $item->menu_id])->whereNull('deleted_at')->get();
                             }else{
                                 $data = DB::table('menu')->where(['menu_id' => $item])->whereNull('deleted_at')->get();
@@ -84,7 +84,7 @@ class LoginController extends Controller
                     }
                 }
                 
-                // dd($data_hakakses);
+                // dd($menu);
                 $user_data = DB::table('pegawai')->where(['pegawai_id' => $check_password->pegawai_id])->first();
                 $image = "";
                 if(isset($user_data)){

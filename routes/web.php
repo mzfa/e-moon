@@ -9,7 +9,7 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ProfesiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HakAksesController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\KategoriStatusController;
 use App\Http\Controllers\BidangPekerjaanController;
@@ -87,7 +87,10 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::controller(UserController::class)->middleware('cek_login:user.index')->group(function () {
         Route::get('/user', 'index')->name('user.index');
-        Route::get('/user/sync', 'sync');
+        Route::get('/user/delete/{id}', 'delete');
+        Route::post('/user/store', 'store');
+        Route::post('/user/updateUser', 'updateUser');
+        Route::get('/user/editUser/{id}', 'editUser');
         Route::get('/user/edit/{id}', 'edit');
         Route::post('/user/update', 'update');
     });
@@ -188,6 +191,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/proyek/update', 'update');
         Route::get('/proyek/edit/{id}', 'edit');
         Route::get('/proyek/delete/{id}', 'delete');
+        Route::get('/proyek/detail/{id}', 'detail');
     });
     Route::controller(SuratMenyuratController::class)->middleware('cek_login:surat_menyurat.index')->group(function () {
         Route::get('/surat_menyurat', 'index')->name('surat_menyurat.index');

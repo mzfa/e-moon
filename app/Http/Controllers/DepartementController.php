@@ -35,8 +35,6 @@ class DepartementController extends Controller
 
     public function edit($id)
     {
-        // $id = Crypt::decrypt($id);
-        // dd($data);
         $text = "Data tidak ditemukan";
         if($data = DB::select("SELECT * FROM departement WHERE departement_id='$id'")){
 

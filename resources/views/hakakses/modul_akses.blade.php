@@ -2,23 +2,28 @@
 
 @section('content')
 
-<div class="main-container container">
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-auto">
-                </div>
-                <div class="col px-0 align-self-center">
-                    <h5 class="mb-0 text-color-theme">Modul Akses</h5>
-                    <p class="text-muted size-12"></p>
-                </div>
-            </div>
-        </div>
-        <div class="card border-0">
-            <div class="card-body">
-                <div class="table-responsive">
+<main id="main" class="main">
 
-                    @if(Session::has('success'))
+    <div class="pagetitle">
+        <h1>Data User</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
+                <li class="breadcrumb-item">Master Data</li>
+                <li class="breadcrumb-item active">User</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">User </h5>
+
+                        <!-- Table with stripped rows -->
+                        @if(Session::has('success'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>{{ Session::get('success') }}</strong> 
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -54,7 +59,7 @@
                                             class="checkbox" name="menu_id[]" value="{{ $item['menu_id'] }}">
                                         </td>
                                         <td>
-                                            <h5 class="text-white">{{ strtoupper($item['nama_menu']) }}</h5>
+                                            <h5 class="text-success">{{ strtoupper($item['nama_menu']) }}</h5>
                                             @if ($item['parent_id'] == 0)
                                             @else
                                                 <h5 class="text-primary">&nbsp;&nbsp;&nbsp;
@@ -79,10 +84,14 @@
                             </tbody>
                         </table>
                     </form>
+                        <!-- End Table with stripped rows -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+</main>
+
 
 @endsection

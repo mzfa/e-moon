@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -29,67 +29,75 @@ class UserController extends Controller
         return view('user', compact('data'));
     }
 
-    public function sync()
-    {
-        $list_user = DB::connection('PHIS-V2')
-            ->table('users')
-            ->select([
-                'user_id',
-                'user_name',
-                'user_password',
-                'nama_pegawai',
-                'status_batal',
-                'pegawai_id',
-            ])
-            ->orderBy('user_id')
-            ->get();
-    
-        $userid = Auth::user()->id;
-        $datanya[] = [
-            'id' => 0,
-            'created_by' => $userid,
+    public function store(Request $request){
+        $request->validate([
+            'name' => ['required', 'string'],
+            'username' => ['required', 'string'],
+            'password' => ['required'],
+        ]);
+        $data = [
+            'created_by' => Auth::user()->id,
             'created_at' => now(),
-            'deleted_by' => null,
-            'deleted_at' => null,
-            'username' => 'mzfa',
-            'password' => 'mzfa',
-            'name' => 'mzfa',
-            'pegawai_id' => 0,
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => $request->password,
         ];
-        foreach ($list_user as $item) {
-            if($item->status_batal == null){
-                $datanya[] = [
-                    'id' => $item->user_id,
-                    'created_by' => $userid,
-                    'created_at' => now(),
-                    'deleted_by' => null,
-                    'deleted_at' => null,
-                    'username' => $item->user_name,
-                    'password' => $item->user_password,
-                    'name' => $item->nama_pegawai,
-                    'pegawai_id' => $item->pegawai_id,
-                ];
-            }else{
-                $datanya[] = [
-                    'id' => $item->user_id,
-                    'created_by' => $userid,
-                    'created_at' => now(),
-                    'deleted_by' => 0,
-                    'deleted_at' => now(),
-                    'username' => $item->user_name,
-                    'password' => $item->user_password,
-                    'name' => $item->nama_pegawai,
-                    'pegawai_id' => $item->pegawai_id,
-                ];
-            }
+        DB::table('users')->insert($data);
+
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
+    }
+
+    public function editUser($id)
+    {
+        // $id = Crypt::decrypt($id);
+        // dd($data);
+        $text = "Data tidak dapat di ubah";
+        if($data = DB::select("SELECT * FROM users WHERE id='$id'")){
+
+            $text = '<div class="mb-3">'.
+                    '<label for="staticEmail" class="form-label">Nama Lengkap</label>'.
+                    '<input type="text" class="form-control" id="name" name="name" value="'.$data[0]->name.'" required>'.
+                '</div>'.
+                '<div class="mb-3">'.
+                '<label for="staticEmail" class="form-label">Username</label>'.
+                '<input type="text" class="form-control" id="username" name="username" value="'.$data[0]->username.'" required>'.
+            '</div>'.
+                '<div class="mb-3">'.
+                '<label for="staticEmail" class="form-label">Password</label>'.
+                '<input type="password" class="form-control" id="password" name="password" value="'.$data[0]->password.'" required>'.
+            '</div>'.
+                '<input type="hidden" class="form-control" id="id" name="id" value="'.Crypt::encrypt($data[0]->id) .'" required>';
         }
-        // dd($datanya);
+        return $text;
+    }
 
-        DB::table('users')->truncate();
-        DB::table('users')->insert($datanya);
-        return Redirect::back()->with('message', ['success', 'Data berhasil disimpan']);
-
-        // return redirect()->back()->with('status', ['success', 'Data berhasil disimpan']);
+    public function updateUser(Request $request){
+        // dd($request);
+        $request->validate([
+            'name' => ['required', 'string'],
+            'username' => ['required', 'string'],
+            'password' => ['required'],
+        ]);
+        $data = [
+            'updated_by' => Auth::user()->id,
+            'updated_at' => now(),
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => $request->password,
+        ];
+        $id = Crypt::decrypt($request->id);
+        $status_departement = "Aktif";
+        DB::table('users')->where(['id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Ubah!']);
+    }
+    public function delete($id){
+        $id = Crypt::decrypt($id);
+        $data = [
+            'deleted_by' => Auth::user()->id,
+            'deleted_at' => now(),
+        ];
+        DB::table('departement')->where(['departement_id' => $id])->update($data);
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Hapus!']);
     }
 
     public function edit($id)
@@ -121,19 +129,6 @@ class UserController extends Controller
         return $text;
         // return view('admin.hakakses.edit');
     }
-    // public function update(Request $request){
-    //     $request->validate([
-    //         'hakakses_id' => ['required', 'string'],
-    //     ]);
-    //     $data = [
-    //         'updated_by' => Auth::user()->id,
-    //         'updated_at' => now(),
-    //         'hakakses_id' => $request->hakakses_id,
-    //     ];
-    //     $id = Crypt::decrypt($request->id);
-    //     DB::table('users')->where(['id' => $id])->update($data);
-    //     return Redirect::back()->with(['success' => 'Data Berhasil Di Ubah!']);
-    // }
     public function update(Request $request){
         $request->validate([
             'user_id' => ['required'],
