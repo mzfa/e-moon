@@ -26,7 +26,7 @@
                                 </button></h5>
 
                             <!-- Table with stripped rows -->
-                            <table class="table" id="table-1">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Nama Menu</th>

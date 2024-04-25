@@ -12,13 +12,36 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // dump(Session('profesi_id'));
-        // $jenis_pendidikan = DB::table('jenis_pendidikan')->whereNull('jenis_pendidikan.deleted_at')->count();
-        // $pegawai = DB::table('pegawai')->whereNull('pegawai.deleted_at')->count();
-        // $keluarga_pegawai = DB::table('keluarga_pegawai')->whereNull('keluarga_pegawai.deleted_at')->count();
-        // $pelatihan_pegawai = DB::table('pelatihan_pegawai')->whereNull('pelatihan_pegawai.deleted_at')->count();
-        // dd($jenis_pendidikan);
-        return view('home');
+        $data = DB::select(DB::raw('select
+            progress.progress_id,
+            progress.minggu_ke,
+            progress.start,
+            progress.finish,
+            sum(progress_detail.bobot) as bobot,
+            sum(progress_detail.bobot_rencana) as bobot_rencana,
+            sum(progress_detail.bobot_minggu_ini) as realisasi_mingguan,
+            sum(progress_detail.bobot) - sum(progress_detail.bobot_sd_minggu_ini) as deviasi
+        from
+            progress
+        left join progress_detail on
+            progress_detail.progress_id = progress.progress_id
+        where
+            progress.deleted_at is null group by 
+        progress.progress_id,minggu_ke,start,finish,progress_detail.bobot,progress_detail.bobot_rencana,progress_detail.bobot_minggu_ini'));
+        // dd($data);
+        $indikator1 = '';
+        $indikator2 = '';
+        $keterangan = '';
+        foreach($data as $item){
+            $indikator1 .= $item->bobot_rencana.',';
+            $indikator2 .= $item->realisasi_mingguan.',';
+            $keterangan .= $item->minggu_ke.',';
+        }
+        // dd($indikator1,$indikator2,$keterangan);
+        $indikator1 = substr($indikator1, 0, -1);
+        $indikator2 = substr($indikator2, 0, -1);
+        $keterangan = substr($keterangan, 0, -1);
+        return view('home', compact('indikator1','indikator2','keterangan'));
     }
 
     public function buat_password(Request $request){

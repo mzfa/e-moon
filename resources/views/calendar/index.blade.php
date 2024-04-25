@@ -44,7 +44,12 @@
                 },
                 editable: true,
                 dayMaxEvents: true, // allow "more" link when too many events
-                events: {!! $eventnya !!}
+                events: {!! $eventnya !!},
+                eventTimeFormat: { 
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12:false
+                }
             });
 
             calendar.render();

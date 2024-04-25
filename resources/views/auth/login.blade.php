@@ -75,7 +75,7 @@
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
                       <div class="input-group has-validation">
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="text" name="username" class="form-control" id="yourUsername" required autofocus>
                         <div class="invalid-feedback">Please enter your username.</div>
                       </div>
                     </div>

@@ -10,7 +10,7 @@
                         <div class="card mt-3">
                             <div class="card-body">
                                 <h5 class="card-title">Tambah Dokumen</h5>
-                                <form class="row g-3" action="{{ url('surat_menyurat/store_doc') }}" method="post" enctype="multipart/form-data">
+                                <form class="row g-3" action="{{ url('dok_adm/store_doc') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onclick="cek_checkbox()">
@@ -49,12 +49,12 @@
                             <tbody>
                                 @foreach ($data as $item)
                                     <tr>
-                                        <td><a target="_blank" href="{{ url('dokumen/surat/'.$item->nama_file) }}">{{ $item->nama_file ?? '-' }}</a></td>
+                                        <td><a target="_blank" href="{{ url('dokumen/dokumen_administrasi/'.$item->nama_file) }}">{{ $item->nama_file ?? '-' }}</a></td>
                                         <td>{{ $item->link_dokumen ?? '-' }}</td>
                                         <td>{{ $item->keterangan }}</td>
                                         <td>
                                             <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')"
-                                                href="{{ url('surat_menyurat/delete_doc/' . Crypt::encrypt($item->dokumen_surat_id)) }}"
+                                                href="{{ url('dok_adm/delete_doc/' . Crypt::encrypt($item->dokumen_id)) }}"
                                                 class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
@@ -89,7 +89,7 @@
         function edit(id) {
             $.ajax({
                 type: 'get',
-                url: "{{ url('surat_menyurat/edit') }}/" + id,
+                url: "{{ url('dok_adm/edit') }}/" + id,
                 // data:{'id':id}, 
                 success: function(tampil) {
                     $('#tampildata').html(tampil);
