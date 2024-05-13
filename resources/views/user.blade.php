@@ -104,6 +104,14 @@
                         <label for="staticEmail" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Pegawai</label>
+                        <select name="pegawai_id" id="pegawai_id" class="form-control">
+                            @foreach ($pegawai as $item)
+                                <option value="{{ $item->pegawai_id }}">{{ $item->nama_pegawai }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

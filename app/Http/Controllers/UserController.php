@@ -26,7 +26,8 @@ class UserController extends Controller
             'user_akses.jenis_akses',
             'hakakses.nama_hakakses',
         ])->whereNull('users.deleted_at')->get();
-        return view('user', compact('data'));
+        $pegawai = DB::table('pegawai')->whereNull('pegawai.deleted_at')->get();
+        return view('user', compact('data','pegawai'));
     }
 
     public function store(Request $request){
@@ -34,6 +35,7 @@ class UserController extends Controller
             'name' => ['required', 'string'],
             'username' => ['required', 'string'],
             'password' => ['required'],
+            'pegawai_id' => ['required'],
         ]);
         $data = [
             'created_by' => Auth::user()->id,
@@ -41,6 +43,7 @@ class UserController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'password' => $request->password,
+            'pegawai_id' => $request->pegawai_id,
         ];
         DB::table('users')->insert($data);
 
@@ -52,6 +55,7 @@ class UserController extends Controller
         // $id = Crypt::decrypt($id);
         // dd($data);
         $text = "Data tidak dapat di ubah";
+        $pegawai = DB::table('pegawai')->whereNull('pegawai.deleted_at')->get();
         if($data = DB::select("SELECT * FROM users WHERE id='$id'")){
 
             $text = '<div class="mb-3">'.
@@ -66,6 +70,16 @@ class UserController extends Controller
                 '<label for="staticEmail" class="form-label">Password</label>'.
                 '<input type="password" class="form-control" id="password" name="password" value="'.$data[0]->password.'" required>'.
             '</div>'.
+                '<div class="mb-3">'.
+                '<label for="staticEmail" class="form-label">Pegawai</label>'.
+                '<select required class="form-control" name="pegawai_id" id="pegawai_id">'.
+                            '<option value="">Pilih Nama Pegawai</option>';
+                    foreach($pegawai as $item){
+                        $stat = ($data[0]->pegawai_id == $item->pegawai_id) ? "selected" : "";
+                        $text .= '<option value="'.$item->pegawai_id.'" '.$stat.'>'.$item->nama_pegawai.'</option>';
+                    }
+                $text .= '</select>'.
+            '</div>'.
                 '<input type="hidden" class="form-control" id="id" name="id" value="'.Crypt::encrypt($data[0]->id) .'" required>';
         }
         return $text;
@@ -77,6 +91,7 @@ class UserController extends Controller
             'name' => ['required', 'string'],
             'username' => ['required', 'string'],
             'password' => ['required'],
+            'pegawai_id' => ['required'],
         ]);
         $data = [
             'updated_by' => Auth::user()->id,
@@ -84,6 +99,7 @@ class UserController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'password' => $request->password,
+            'pegawai_id' => $request->pegawai_id,
         ];
         $id = Crypt::decrypt($request->id);
         $status_departement = "Aktif";
@@ -96,7 +112,7 @@ class UserController extends Controller
             'deleted_by' => Auth::user()->id,
             'deleted_at' => now(),
         ];
-        DB::table('departement')->where(['departement_id' => $id])->update($data);
+        DB::table('users')->where(['id' => $id])->update($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Hapus!']);
     }
 

@@ -26,6 +26,8 @@ class MaterialApprovalController extends Controller
             'revisi_status' => ['required'],
             'status_material' => ['required'],
             'tgl_dok_material' => ['required'],
+            'brand' => ['required'],
+            'tanggal_dikembalikan' => ['required'],
         ]);
         $data = [
             'created_by' => Auth::user()->id,
@@ -36,6 +38,8 @@ class MaterialApprovalController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_material' => $request->status_material,
             'tgl_dok_material' => $request->tgl_dok_material,
+            'brand' => $request->brand,
+            'tanggal_dikembalikan' => $request->tanggal_dikembalikan,
         ];
         DB::table('material_approval')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -48,6 +52,13 @@ class MaterialApprovalController extends Controller
             'durasi' => ['required'],
             'catatan' => ['required'],
         ]);
+
+        $nama_file = '';
+        if($request->hasFile('file')){
+            $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$request->file('file')->getClientOriginalName());
+            $nama_file = $file;
+            $request->file('file')->move(public_path('dokumen/material_approval'), $file);
+        }
         // dd($request);
         $data = [
             'created_by' => Auth::user()->id,
@@ -57,6 +68,7 @@ class MaterialApprovalController extends Controller
             'departement_id' => $request->departement_id,
             'durasi' => $request->durasi,
             'catatan' => $request->catatan,
+            'file_material' => $nama_file,
         ];
         DB::table('dokumen_proses_material_approval')->insert($data);
 
@@ -107,8 +119,16 @@ class MaterialApprovalController extends Controller
                     '</select>'.
                 '</div>'.
                 '<div class="mb-3">'.
-                    '<label for="staticEmail" class="form-label">Tanggal Dok Meterial</label>'.
+                    '<label for="staticEmail" class="form-label">Tanggal Submit</label>'.
                     '<input type="date" class="form-control" id="tgl_dok_material" name="tgl_dok_material" value="'.$data[0]->tgl_dok_material.'" required>'.
+                '</div>'.
+                '<div class="mb-3">'.
+                    '<label for="staticEmail" class="form-label">Tanggal Dikembalikan</label>'.
+                    '<input type="date" class="form-control" id="tanggal_dikembalikan" name="tanggal_dikembalikan" value="'.$data[0]->tanggal_dikembalikan.'">'.
+                '</div>'.
+                '<div class="mb-3">'.
+                    '<label for="staticEmail" class="form-label">Brand</label>'.
+                    '<input type="text" class="form-control" id="brand" name="brand" value="'.$data[0]->brand.'" required>'.
                 '</div>'.
                 '<input type="hidden" class="form-control" id="material_approval_id" name="material_approval_id" value="'.Crypt::encrypt($data[0]->material_approval_id) .'" required>';
         }
@@ -152,10 +172,15 @@ class MaterialApprovalController extends Controller
                         '<label for="staticEmail" class="form-label">Durasi (hari)</label>'.
                         '<input type="number" class="form-control" id="durasi" value="'.$data[0]->durasi.'" name="durasi" required>'.
                     '</div>'.
+                    '<div class="col-6 mb-3">'.
+                        '<label for="staticEmail" class="form-label">File Material</label>'.
+                        '<input type="file" class="form-control" id="file" name="file" required>'.
+                    '</div>'.
                     '<div class="col-12 mb-3">'.
                         '<label for="staticEmail" class="form-label">Catatan</label>'.
                         '<textarea name="catatan" id="catatan" cols="30" rows="10" class="form-control">'.$data[0]->catatan.'</textarea>'.
                     '</div>'.
+                    '<input type="hidden" class="form-control" id="file_material" name="file_material" value="'.$data[0]->file_material.'" required>'.
                     '<input type="hidden" class="form-control" id="dokumen_proses_id" name="dokumen_proses_id" value="'.Crypt::encrypt($data[0]->dokumen_proses_id) .'" required>';
         }
         return $text;
@@ -178,6 +203,8 @@ class MaterialApprovalController extends Controller
             'bidang_pekerjaan_id' => $request->bidang_pekerjaan_id,
             'revisi_status' => $request->revisi_status,
             'status_material' => $request->status_material,
+            'brand' => $request->brand,
+            'tanggal_dikembalikan' => $request->tanggal_dikembalikan,
         ];
         $material_approval_id = Crypt::decrypt($request->material_approval_id);
         DB::table('material_approval')->where(['material_approval_id' => $material_approval_id])->update($data);
@@ -185,6 +212,12 @@ class MaterialApprovalController extends Controller
     }
     public function dokumen_proses_update(Request $request){
         // dd($request);
+        $nama_file = $request->file_material;
+        if($request->hasFile('file')){
+            $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$request->file('file')->getClientOriginalName());
+            $nama_file = $file;
+            $request->file('file')->move(public_path('dokumen/material_approval'), $file);
+        }
         $data = [
             'updated_by' => Auth::user()->id,
             'updated_at' => now(),
@@ -193,6 +226,7 @@ class MaterialApprovalController extends Controller
             'departement_id' => $request->departement_id,
             'durasi' => $request->durasi,
             'catatan' => $request->catatan,
+            'file_material' => $nama_file,
         ];
         $dokumen_proses_id = Crypt::decrypt($request->dokumen_proses_id);
         DB::table('dokumen_proses_material_approval')->where(['dokumen_proses_id' => $dokumen_proses_id])->update($data);
@@ -246,7 +280,7 @@ class MaterialApprovalController extends Controller
         if($request->hasFile('file')){
             $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$request->file('file')->getClientOriginalName());
             $nama_file = $file;
-            $request->file('file')->move(public_path('dokumen/surat'), $file);
+            $request->file('file')->move(public_path('dokumen/material_approval'), $file);
         }
         // dd($request);
         $data = [

@@ -70,6 +70,10 @@
                                                             <label for="staticEmail" class="form-label">Durasi (hari)</label>
                                                             <input type="number" class="form-control" id="durasi" name="durasi" required>
                                                         </div>
+                                                        <div class="col-6 mb-3">
+                                                            <label for="staticEmail" class="form-label">File Material</label>
+                                                            <input type="file" class="form-control" id="file" name="file" required>
+                                                        </div>
                                                         <div class="col-12 mb-3">
                                                             <label for="staticEmail" class="form-label">Catatan</label>
                                                             <textarea name="catatan" id="catatan" cols="30" rows="10" class="form-control"></textarea>
@@ -112,6 +116,7 @@
                                                     <th>Catatan</th>
                                                     <th>Tanggal Diubah</th>
                                                     <th>Diubah Oleh</th>
+                                                    <th>File</th>
                                                     <th>#</th>
                                                 </tr>
                                             </thead>
@@ -126,6 +131,13 @@
                                                         <td>{{ $item->catatan }}</td>
                                                         <td>{{ $item->updated_at ?? "-" }}</td>
                                                         <td>{{ $item->username }}</td>
+                                                        <td>
+                                                            @if (empty($item->file_material))
+                                                            <a href="#" class="btn text-white btn-danger">Belum ada file</a>
+                                                            @else
+                                                            <a href="{{ url('dokumen/material_approval/' . $item->file_material) }}" target="_blank" class="btn text-white btn-info">Lihat file</a>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <a onclick="return edit({{ $item->dokumen_proses_id }})"
                                                                 class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>

@@ -32,7 +32,7 @@ class CalendarController extends Controller
         $request->validate([
             'agenda' => ['required', 'string'],
             'tempat_event' => ['required'],
-            'kehadiran' => ['required'],
+            // 'kehadiran' => ['required'],
             'tanggal_awal' => ['required'],
             'tanggal_akhir' => ['required'],
         ]);

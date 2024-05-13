@@ -13,6 +13,26 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach ($errors->all() as $error)
+                    <strong>{{ $error }} <br></strong>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <section class="section">
             <div class="row">
@@ -51,25 +71,27 @@
                                                     class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
                                                 <a onclick="return tambahsubmenu({{ $item['menu_id'] }})"
                                                     class="btn text-white btn-primary"><i class="bi bi-plus"></i></a>
-                                                    @if(empty($item['submenu']))
+                                                @if (empty($item['submenu']))
                                                     <a href="{{ url('menu/delete/' . Crypt::encrypt($item['menu_id'])) }}"
                                                         class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
-                                                    @endif
+                                                @endif
                                             </td>
                                         </tr>
-                                        @foreach($item['submenu'] as $submenu)
-                                        <tr>
-                                            <td>
-                                                <p class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ strtoupper($submenu['nama_menu']) }}</p>
-                                            </td>
-                                            <td>{{ $submenu['url_menu'] }}</td>
-                                            <td>
-                                                <a onclick="return edit({{ $submenu['menu_id'] }})"
-                                                    class="btn text-white btn-info"><i class="bi bi-pen"></i></a>
-                                                <a href="{{ url('menu/delete/' . Crypt::encrypt($submenu['menu_id'])) }}"
-                                                    class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                        @foreach ($item['submenu'] as $submenu)
+                                            <tr>
+                                                <td>
+                                                    <p class="text-danger">
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ strtoupper($submenu['nama_menu']) }}
+                                                    </p>
+                                                </td>
+                                                <td>{{ $submenu['url_menu'] }}</td>
+                                                <td>
+                                                    <a onclick="return edit({{ $submenu['menu_id'] }})"
+                                                        class="btn text-white btn-info"><i class="bi bi-pen"></i></a>
+                                                    <a href="{{ url('menu/delete/' . Crypt::encrypt($submenu['menu_id'])) }}"
+                                                        class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     @endforeach
                                 </tbody>
@@ -85,7 +107,7 @@
 
     </main>
 
-    <div class="modal fade" id="editModal" tabindex="-1">    
+    <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog">
             <form action="{{ url('menu/update') }}" method="post">
                 @csrf

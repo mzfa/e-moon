@@ -30,11 +30,13 @@
                             <thead>
                                 <tr>
                                     <th>No Material Approval</th>
-                                    <th>Perihal Meterial</th>
+                                    <th>Meterial</th>
                                     <th>Bidang</th>
                                     <th>Revisi Status</th>
                                     <th>Status Material</th>
-                                    <th>Tanggal Dok Material</th>
+                                    <th>Tanggal Submit</th>
+                                    <th>Tanggal Dikembalikan</th>
+                                    <th>Brand</th>
                                     <th>#</th>
                                 </tr>
                             </thead>
@@ -47,6 +49,8 @@
                                         <td>{{ $item->revisi_status }}</td>
                                         <td>{{ $item->status_material }}</td>
                                         <td>{{ $item->tgl_dok_material }}</td>
+                                        <td>{{ $item->tanggal_dikembalikan }}</td>
+                                        <td>{{ $item->brand }}</td>
                                         <td>
                                             <a onclick="return dokumen({{ $item->material_approval_id }})"
                                                 class="btn text-white btn-secondary"><i class="bi bi-book"></i></a>
@@ -82,12 +86,24 @@
                         <input type="text" class="form-control" id="no_material_approval" name="no_material_approval" required>
                     </div>
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">Perihal Meterial</label>
+                        <label for="staticEmail" class="form-label">Meterial</label>
                         <input type="text" class="form-control" id="perihal_material" name="perihal_material" required>
                     </div>
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">Tanggal Dokumen</label>
+                        <label for="staticEmail" class="form-label">Tanggal Submit</label>
                         <input type="date" class="form-control" id="tgl_dok_material" name="tgl_dok_material" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Tanggal Kembali</label>
+                        <input type="date" class="form-control" id="tanggal_dikembalikan" name="tanggal_dikembalikan">
+                    </div>
+                    <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Brand</label>
+                        <input type="text" class="form-control" id="brand" name="brand" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Upload File</label>
+                        <input type="file" class="form-control" id="file" name="file">
                     </div>
                     <div class="mb-3">
                         <label for="staticEmail" class="form-label">Bidang Pekerjaan</label>
@@ -110,8 +126,9 @@
                         <label for="staticEmail" class="form-label">Status Material</label>
                         <select class="form-control" name="status_material" id="status_material">
                             <option value="">Pilih Status Material</option>
-                            <option value="Open">Open</option>
-                            <option value="Close">Close</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Direvisi">Direvisi</option>
+                            <option value="Ditolak">Ditolak</option>
                         </select>
                     </div>
                 </div>

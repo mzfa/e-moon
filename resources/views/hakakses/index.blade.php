@@ -13,6 +13,26 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach ($errors->all() as $error)
+                    <strong>{{ $error }} <br></strong>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <section class="section">
             <div class="row">
@@ -59,8 +79,8 @@
         </section>
 
     </main>
-    
-    <div class="modal fade" id="editModal" tabindex="-1">    
+
+    <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog">
             <form action="{{ url('hakakses/update') }}" method="post">
                 @csrf

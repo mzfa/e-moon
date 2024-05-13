@@ -60,6 +60,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::POST('/buat_password', [\App\Http\Controllers\HomeController::class, 'buat_password'])->name('buat_password');
     Route::POST('/ubah_password', [\App\Http\Controllers\HomeController::class, 'ubah_password'])->name('ubah_password');
     
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/my_profile', 'index')->name('my_profile.index');
+        Route::post('/my_profile/update', 'update');
+    });
     Route::controller(HakAksesController::class)->middleware('cek_login:hakakses.index')->group(function () {
         Route::get('/hakakses', 'index')->name('hakakses.index');
         Route::get('/hakakses/edit/{id}', 'edit');

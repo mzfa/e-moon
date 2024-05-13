@@ -40,15 +40,15 @@
                             $('#editModal').modal('show');
                         }
                     })
-                    
+
                 },
                 editable: true,
                 dayMaxEvents: true, // allow "more" link when too many events
                 events: {!! $eventnya !!},
-                eventTimeFormat: { 
+                eventTimeFormat: {
                     hour: '2-digit',
                     minute: '2-digit',
-                    hour12:false
+                    hour12: false
                 }
             });
 
@@ -75,6 +75,26 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach ($errors->all() as $error)
+                    <strong>{{ $error }} <br></strong>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <section class="section">
             <div class="row">
@@ -90,7 +110,7 @@
                                         @csrf
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5 >Tambah Data</h5>
+                                                <h5>Tambah Data</h5>
                                             </div>
                                             <div class="card-body mb-3">
                                                 <div class="mb-3 mt-3">
@@ -100,24 +120,29 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="staticEmail" class="form-label">Tempat Event</label>
-                                                    <input type="text" class="form-control" id="tempat_event" name="tempat_event" required>
+                                                    <input type="text" class="form-control" id="tempat_event"
+                                                        name="tempat_event" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="staticEmail" class="form-label">Tanggal Awal</label>
-                                                    <input type="datetime-local" class="form-control" id="tanggal_awal" name="tanggal_awal" required>
+                                                    <input type="datetime-local" class="form-control" id="tanggal_awal"
+                                                        name="tanggal_awal" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="staticEmail" class="form-label">Tanggal Akhir</label>
-                                                    <input type="datetime-local" class="form-control" id="tanggal_akhir" name="tanggal_akhir" required>
+                                                    <input type="datetime-local" class="form-control" id="tanggal_akhir"
+                                                        name="tanggal_akhir" required>
                                                 </div>
-                                                <div class="mb-3">
+                                                {{-- <div class="mb-3">
                                                     <label for="staticEmail" class="form-label">Kehadiran</label>
-                                                    <select class="select2-multiple form-control" name="kehadiran[]" multiple="multiple">
+                                                    <select class="select2-multiple form-control" name="kehadiran[]"
+                                                        multiple="multiple">
                                                         @foreach ($data as $item)
-                                                            <option value="{{ $item->departement_id }}">{{ $item->peran }}</option>
+                                                            <option value="{{ $item->departement_id }}">{{ $item->peran }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                             <div class="card-footer">
                                                 <button type="reset" class="btn btn-danger">Reset</button>
