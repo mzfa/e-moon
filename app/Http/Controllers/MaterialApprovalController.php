@@ -112,10 +112,12 @@ class MaterialApprovalController extends Controller
                     '<label for="staticEmail" class="form-label">Status Material</label>'.
                     '<select required class="form-control" name="status_material" id="status_material">'.
                         '<option value="">Pilih Status Material</option>';
-                        $revisi1 = ($data[0]->status_material == "Open") ? "selected" : "";
-                        $revisi2 = ($data[0]->status_material == "Close") ? "selected" : "";
-                        $text .= '<option '.$revisi1.' value="Open">Open</option>'.
-                        '<option '.$revisi2.' value="Close">Close</option>'.
+                        $revisi1 = ($data[0]->status_material == "Disetujui") ? "selected" : "";
+                        $revisi2 = ($data[0]->status_material == "Direvisi") ? "selected" : "";
+                        $revisi3 = ($data[0]->status_material == "Ditolak") ? "selected" : "";
+                        $text .= '<option '.$revisi1.' value="Disetujui">Disetujui</option>'.
+                        '<option '.$revisi2.' value="Direvisi">Direvisi</option>'.
+                        '<option '.$revisi3.' value="Ditolak">Ditolak</option>'.
                     '</select>'.
                 '</div>'.
                 '<div class="mb-3">'.

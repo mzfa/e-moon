@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/my_profile', 'index')->name('my_profile.index');
         Route::post('/my_profile/update', 'update');
+        Route::post('/ganti_password', 'gantiPassword');
     });
     Route::controller(HakAksesController::class)->middleware('cek_login:hakakses.index')->group(function () {
         Route::get('/hakakses', 'index')->name('hakakses.index');

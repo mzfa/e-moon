@@ -13,6 +13,26 @@
                 </ol>
             </nav>
         </div><!-- End Page Title -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach ($errors->all() as $error)
+                    <strong>{{ $error }} <br></strong>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <section class="section profile">
             <div class="row">
@@ -180,32 +200,28 @@
 
                                 <div class="tab-pane fade pt-3" id="profile-change-password">
                                     <!-- Change Password Form -->
-                                    <form>
-
+                                    <form method="POST" action="{{ url('ganti_password') }}">
+                                        @csrf
                                         <div class="row mb-3">
-                                            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
-                                                Password</label>
+                                            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Password Sebelumnya</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="password" type="password" class="form-control"
+                                                <input required name="password_lama" type="password_lama" class="form-control"
                                                     id="currentPassword">
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
-                                                Password</label>
+                                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Password Baru</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="newpassword" type="password" class="form-control"
-                                                    id="newPassword">
+                                                <input required name="password_baru" type="password" class="form-control"
+                                                    id="password_baru">
                                             </div>
                                         </div>
-
                                         <div class="row mb-3">
-                                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter
-                                                New Password</label>
+                                            <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Konfirmasi Password</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="renewpassword" type="password" class="form-control"
-                                                    id="renewPassword">
+                                                <input required name="konfirmasi_password" type="password" class="form-control"
+                                                    id="konfirmasi_password">
                                             </div>
                                         </div>
 
