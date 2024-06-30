@@ -63,7 +63,7 @@
                                     <div class="d-flex align-items-center">
                                         <div
                                             class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-cart"></i>
+                                            <i class="bi bi-journal-check"></i>
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{ $rencana[$key1] ?? 0 }} %</h6>
@@ -83,7 +83,7 @@
                                     <div class="d-flex align-items-center">
                                         <div
                                             class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-currency-dollar"></i>
+                                            <i class="bi bi-graph-up-arrow"></i>
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{ $realisasi[$key2] ?? 0 }} %</h6>
@@ -159,16 +159,31 @@
                             </div>
                         </div><!-- End Reports -->
                         <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="">
+                                        <div class="card card-body" style="height: 80% !important;">
+                                            <center>
+                                                <img src="{{ asset('assets/img/cctv.png') }}" alt="" style="width: 200px" class="mt-3">
+                                            </center>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="https://accounts.autodesk.com/logon?resume=%2Fas%2FL4bKEZXdEn%2Fresume%2Fas%2Fauthorization.ping&spentity=null#username" target="_blank">
+                                        <div class="card card-body" style="height: 80% !important;"">
+                                            <center>
+                                                <img src="{{ asset('assets/img/bim.png') }}" alt="" style="width: 200px" class="mt-3">
+                                            </center>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="mt-3">
-                                        <a href="">
-                                            <img src="{{ asset('assets/img/cctv.png') }}" alt="" style="width: 200px">
-                                        </a>
                                         &nbsp;
-                                        <a href="https://accounts.autodesk.com/logon?resume=%2Fas%2FL4bKEZXdEn%2Fresume%2Fas%2Fauthorization.ping&spentity=null#username" target="_blank">
-                                            <img src="{{ asset('assets/img/bim.png') }}" alt="" style="width: 200px">
-                                        </a>
+                                        
                                     </div>
                                 </div>
                             </div>
