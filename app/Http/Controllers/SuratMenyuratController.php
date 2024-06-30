@@ -162,11 +162,27 @@ class SuratMenyuratController extends Controller
 
     public function doc($id)
     {
-        $data = DB::table('dokumen_surat')->whereNull('dokumen_surat.deleted_at')->where('surat_menyurat_id',$id)->get();
-        return view('surat_menyurat.dokumen', compact('data','id'));
+        $data = DB::table('dokumen')->whereNull('dokumen.deleted_at')->where('jenis_dokumen_id',$id)->where('jenis_dokumen','surat')->get();
+        $idnya = '';
+        foreach($data as $item){
+            $idnya .= $item->dokumen_id.',';
+        }
+        $idnya = substr($idnya,0,-1);
+        // dd($idnya);
+        $data2 = DB::select("SELECT command.isi_command,users.name,command.dokumen_id FROM command LEFT JOIN users ON command.created_by = users.id where dokumen_id IN ('$idnya')");
+        $commandnya = [];
+        foreach($data2 as $item){
+            $commandnya[$item->dokumen_id][] = [
+                'isi_command' => $item->isi_command,
+                'user' => $item->name
+            ];
+        }
+        // dd($commandnya);
+        return view('surat_menyurat.dokumen', compact('data','id','commandnya'));
     }
 
     public function store_doc(Request $request){
+        
         $nama_file = '';
         if($request->hasFile('file')){
             $file = round(microtime(true) * 1000).'-'.str_replace(' ','-',$request->file('file')->getClientOriginalName());
@@ -180,9 +196,10 @@ class SuratMenyuratController extends Controller
             'link_dokumen' => $request->link_dokumen,
             'nama_file' => $nama_file,
             'keterangan' => $request->keterangan,
-            'surat_menyurat_id' => $request->id,
+            'jenis_dokumen_id' => $request->id,
+            'jenis_dokumen' => "surat",
         ];
-        DB::table('dokumen_surat')->insert($data);
+        DB::table('dokumen')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
     }
     

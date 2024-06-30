@@ -116,7 +116,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="staticEmail" class="form-label">Tempat</label>
-                            <input type="datetime-local" class="form-control" id="tempat" name="tempat" required>
+                            <input type="text" class="form-control" id="tempat" name="tempat" required>
                         </div>
                     </div>
                     <div class="modal-footer">

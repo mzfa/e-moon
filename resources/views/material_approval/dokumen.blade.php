@@ -14,7 +14,7 @@
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
                                     data-bs-target="#home-justified" type="button" role="tab" aria-controls="home"
-                                    aria-selected="true"><h2>Dokumen Proses</h2></button>
+                                    aria-selected="true"><h2>Dokumen Approval</h2></button>
                             </li>
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
@@ -186,6 +186,23 @@
                                         </form>
                                     </div>
                                 </div>
+                                <div id="editDokumenCommand" style="display: none">
+                                    <form action="{{ url('material_approval/dokumen_proses_update') }}" method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="card-title" id="staticBackdropLabel">Ubah Data</h5>
+                                            </div>
+                                            <div class="card-body row" id="tampiEditlDokumenCommand">
+                                                
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-info" onclick="document.getElementById('editDokumenProses').style.display = 'none'">Hide</button>
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 <!-- Table with stripped rows -->
                                 <table class="table" id="table-2">
                                     <thead>
@@ -193,6 +210,7 @@
                                             <th>Nama Dokumen</th>
                                             <th>Link</th>
                                             <th>Keterangan</th>
+                                            <th>Command</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>
@@ -204,6 +222,21 @@
                                                 </td>
                                                 <td>{{ $item->link_dokumen ?? '-' }}</td>
                                                 <td>{{ $item->keterangan }}</td>
+                                                <td>
+                                                    <form action="{{ url('doc_command/') }}" method="post">
+                                                        <div class="form-group">
+                                                            @csrf
+                                                            <input type="hidden" name="id" value="{{ $item->dokumen_id }}">
+                                                            <input type="text" class="form-control mb-1" name="command">
+                                                            <button type="submit" class="btn btn-success btn-block w-100 mb-2"><i class="bi bi-chat-right-dots"></i> &nbsp; Submit</button>
+                                                            @isset($commandnya[$item->dokumen_id])
+                                                                @foreach ($commandnya[$item->dokumen_id] as $command)
+                                                                    <em>{{ $command['user'].' : '. $command['isi_command'] }}</em><br>
+                                                                @endforeach
+                                                            @endisset
+                                                        </div>
+                                                    </form>
+                                                </td>
                                                 <td>
                                                     <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')"
                                                         href="{{ url('material_approval/delete_doc/' . Crypt::encrypt($item->dokumen_id)) }}"
@@ -249,6 +282,18 @@
                 success: function(tampil) {
                     document.getElementById('editDokumenProses').style.display = 'block';
                     $('#tampiEditlDokumenProses').html(tampil);
+                }
+            })
+        }
+
+        function editFile(id) {
+            $.ajax({
+                type: 'get',
+                url: "{{ url('material_approval/dokumen_proses_edit') }}/" + id,
+                // data:{'id':id}, 
+                success: function(tampil) {
+                    document.getElementById('editDokumenCommand').style.display = 'block';
+                    $('#tampiEditlDokumenCommand').html(tampil);
                 }
             })
         }

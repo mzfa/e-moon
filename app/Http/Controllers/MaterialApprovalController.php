@@ -272,8 +272,24 @@ class MaterialApprovalController extends Controller
         ->leftJoin('departement','departement.departement_id','dokumen_proses_material_approval.departement_id')
         ->whereNull('dokumen_proses_material_approval.deleted_at')
         ->get();
+
+        $idnya = '';
+        foreach($data as $item){
+            $idnya .= $item->dokumen_id.',';
+        }
+        $idnya = substr($idnya,0,-1);
+        // dd($idnya);
+        $data2 = DB::select("SELECT command.isi_command,users.name,command.dokumen_id FROM command LEFT JOIN users ON command.created_by = users.id where dokumen_id IN ('$idnya')");
+        $commandnya = [];
+        foreach($data2 as $item){
+            $commandnya[$item->dokumen_id][] = [
+                'isi_command' => $item->isi_command,
+                'user' => $item->name
+            ];
+        }
+
         $departement = DB::table('departement')->whereNull('departement.deleted_at')->get();
-        return view('material_approval.dokumen', compact('data','id','departement','data_dokumen_proses'));
+        return view('material_approval.dokumen', compact('data','id','departement','data_dokumen_proses','commandnya'));
     }
 
     public function store_doc(Request $request){

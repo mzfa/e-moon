@@ -151,7 +151,19 @@
                         </div>
                         <div class="mb-3">
                             <label for="staticEmail" class="form-label">Luas Tanah</label>
-                            <input type="tetx" class="form-control" id="luas_tanah" name="luas_tanah" required>
+                            <input type="text" class="form-control" id="luas_tanah" name="luas_tanah" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staticEmail" class="form-label">Luas Bangunan</label>
+                            <input type="text" class="form-control" id="luas_bangunan" name="luas_bangunan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staticEmail" class="form-label">Jumlah Lantai</label>
+                            <input type="number" class="form-control" id="jumlah_lantai" name="jumlah_lantai" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staticEmail" class="form-label">Penggunaan</label>
+                            <input type="text" class="form-control" id="penggunaan" name="penggunaan" required>
                         </div>
                         <div class="mb-3">
                             <label for="staticEmail" class="form-label">Uraian Data</label>
@@ -163,7 +175,7 @@
                     </div> --}}
                         <div class="mb-3">
                             <label for="staticEmail" class="form-label">Lokasi</label>
-                            <input type="text" class="form-control" id="lokasi" name="lokasi" required>
+                            <textarea name="lokasi" id="lokasi" cols="30" rows="10" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

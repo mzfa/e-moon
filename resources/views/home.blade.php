@@ -32,6 +32,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @php
+            $key1= 0;
+            $key2= 0;
+            if (!empty($indikator1)) {
+                # code...
+                $rencana = explode(',',$indikator1);
+                end($rencana);         // move the internal pointer to the end of the array
+                $key1 = key($rencana);
+            }
+            if (!empty($indikator2)) {
+                # code...
+                $realisasi = explode(',',$indikator2);
+                end($realisasi);         // move the internal pointer to the end of the array
+                $key2 = key($realisasi);
+            }
+        @endphp
 
         <section class="section dashboard">
             <div class="row">
@@ -39,38 +55,18 @@
                 <!-- Left side columns -->
                 <div class="col-lg-12">
                     <div class="row">
-
                         <!-- Sales Card -->
-                        <div class="col-xxl-4 col-md-6">
+                        <div class="col-xxl-6 col-md-6">
                             <div class="card info-card sales-card">
-
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Sales <span>| Today</span></h5>
-
+                                    <h5 class="card-title">Rencana</h5>
                                     <div class="d-flex align-items-center">
                                         <div
                                             class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                             <i class="bi bi-cart"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>145</h6>
-                                            <span class="text-success small pt-1 fw-bold">12%</span> <span
-                                                class="text-muted small pt-2 ps-1">increase</span>
-
+                                            <h6>{{ $rencana[$key1] ?? 0 }} %</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -79,25 +75,10 @@
                         </div><!-- End Sales Card -->
 
                         <!-- Revenue Card -->
-                        <div class="col-xxl-4 col-md-6">
+                        <div class="col-xxl-6 col-md-6">
                             <div class="card info-card revenue-card">
-
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Revenue <span>| This Month</span></h5>
+                                    <h5 class="card-title">Realisasi</h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -105,77 +86,18 @@
                                             <i class="bi bi-currency-dollar"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>$3,264</h6>
-                                            <span class="text-success small pt-1 fw-bold">8%</span> <span
-                                                class="text-muted small pt-2 ps-1">increase</span>
-
+                                            <h6>{{ $realisasi[$key2] ?? 0 }} %</h6>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div><!-- End Revenue Card -->
-
-                        <!-- Customers Card -->
-                        <div class="col-xxl-4 col-xl-12">
-
-                            <div class="card info-card customers-card">
-
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="card-body">
-                                    <h5 class="card-title">Customers <span>| This Year</span></h5>
-
-                                    <div class="d-flex align-items-center">
-                                        <div
-                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-people"></i>
-                                        </div>
-                                        <div class="ps-3">
-                                            <h6>1244</h6>
-                                            <span class="text-danger small pt-1 fw-bold">12%</span> <span
-                                                class="text-muted small pt-2 ps-1">decrease</span>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div><!-- End Customers Card -->
-
                         <!-- Reports -->
                         <div class="col-12">
                             <div class="card">
-
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                            class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filter</h6>
-                                        </li>
-
-                                        <li><a class="dropdown-item" href="#">Today</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                                    </ul>
-                                </div>
-
                                 <div class="card-body">
-                                    <h5 class="card-title">Reports <span>/Today</span></h5>
+                                    <h5 class="card-title">Reports </h5>
 
                                     <!-- Line Chart -->
                                     <div id="reportsChart"></div>
@@ -236,7 +158,21 @@
 
                             </div>
                         </div><!-- End Reports -->
-
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mt-3">
+                                        <a href="">
+                                            <img src="{{ asset('assets/img/cctv.png') }}" alt="" style="width: 200px">
+                                        </a>
+                                        &nbsp;
+                                        <a href="https://accounts.autodesk.com/logon?resume=%2Fas%2FL4bKEZXdEn%2Fresume%2Fas%2Fauthorization.ping&spentity=null#username" target="_blank">
+                                            <img src="{{ asset('assets/img/bim.png') }}" alt="" style="width: 200px">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div><!-- End Left side columns -->

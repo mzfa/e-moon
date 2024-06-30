@@ -32,9 +32,15 @@ class ProyekController extends Controller
             'manajemen_konstruksi' => $request->manajemen_konstruksi,
             'konsultan_perencana' => $request->konsultan_perencana,
             'kontraktor' => $request->kontraktor,
+            'sub_kontraktor' => $request->sub_kontraktor,
             'waktu_pelaksanaan_mulai' => $request->waktu_pelaksanaan_mulai,
             'waktu_pelaksanaan_berakhir' => $request->waktu_pelaksanaan_berakhir,
             'uraian_data' => $request->uraian_data,
+            'luas_tanah' => $request->luas_tanah,
+            'luas_bangunan' => $request->luas_bangunan,
+            'jumlah_lantai' => $request->jumlah_lantai,
+            'penggunaan' => $request->penggunaan,
+            'pro_prof_pic' => $request->pro_prof_pic,
             'durasi_kontrak' => $durasi_kontrak->format('%a'),
             'pro_prof_pic' => $request->pro_prof_pic,
             'lokasi' => $request->lokasi,
@@ -109,7 +115,7 @@ class ProyekController extends Controller
                 '</div>'.
                 '<div class="mb-3">'.
                     '<label for="staticEmail" class="form-label">Link Lokasi</label>'.
-                    '<input type="text" class="form-control" id="lokasi" name="lokasi" value="'.$data[0]->lokasi.'" required>'.
+                    '<textarea name="lokasi" id="lokasi" cols="30" rows="10" class="form-control">'.$data[0]->lokasi.'</textarea>'.
                 '</div>'.
                 '<input type="hidden" class="form-control" id="proyek_id" name="proyek_id" value="'.Crypt::encrypt($data[0]->proyek_id) .'" required>';
         }

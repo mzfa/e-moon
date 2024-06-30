@@ -14,7 +14,7 @@ class NotulenController extends Controller
 {
     public function index()
     {
-        $data = DB::table('notulen')->get();
+        $data = DB::table('notulen')->whereNull('deleted_at')->get();
         $bidang = DB::table('bidang_pekerjaan')->whereNull('bidang_pekerjaan.deleted_at')->get();
         return view('notulen.index', compact('data','bidang'));
     }
@@ -206,10 +206,25 @@ class NotulenController extends Controller
 
     public function doc($id)
     {
-        $data = DB::table('daftar_hadir')->whereNull('daftar_hadir.deleted_at')->leftJoin('pegawai','pegawai.id','daftar_hadir.pegawai_id')->where('daftar_hadir.notulen_id',$id)->get();
+        // $data = DB::table('daftar_hadir')->whereNull('daftar_hadir.deleted_at')->leftJoin('pegawai','pegawai.pegawai_id','daftar_hadir.pegawai_id')->where('daftar_hadir.notulen_id',$id)->get();
+        $data = DB::table('dokumen')->whereNull('dokumen.deleted_at')->where('jenis_dokumen_id',$id)->where('jenis_dokumen','notulen')->get();
         $agenda = DB::table('agenda')->where('agenda.notulen_id',$id)->get();
         $departement = DB::table('departement')->whereNull('departement.deleted_at')->get();
-        return view('notulen.dokumen', compact('data','id','agenda'));
+        $idnya = '';
+        foreach($data as $item){
+            $idnya .= $item->dokumen_id.',';
+        }
+        $idnya = substr($idnya,0,-1);
+        // dd($idnya);
+        $data2 = DB::select("SELECT command.isi_command,users.name,command.dokumen_id FROM command LEFT JOIN users ON command.created_by = users.id where dokumen_id IN ('$idnya')");
+        $commandnya = [];
+        foreach($data2 as $item){
+            $commandnya[$item->dokumen_id][] = [
+                'isi_command' => $item->isi_command,
+                'user' => $item->name
+            ];
+        }
+        return view('notulen.dokumen', compact('data','id','agenda','commandnya'));
     }
 
     public function store_doc(Request $request){

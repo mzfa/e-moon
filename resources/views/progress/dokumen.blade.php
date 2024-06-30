@@ -19,7 +19,7 @@
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
                                     data-bs-target="#profile-justified" type="button" role="tab"
-                                    aria-controls="profile" aria-selected="false" tabindex="-1"><h2>File Material</h2></button>
+                                    aria-controls="profile" aria-selected="false" tabindex="-1"><h2>File Progress</h2></button>
                             </li>
                             {{-- <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"

@@ -317,14 +317,32 @@ class GambarKerjaController extends Controller
     public function doc($id)
     {
         $uraian_gambar_kerja = DB::table('uraian_gambar_kerja')->whereNull('uraian_gambar_kerja.deleted_at')->get();
-        $data = DB::table('dokumen')->whereNull('dokumen.deleted_at')->where('jenis_dokumen_id',$id)->where('jenis_dokumen','gambar_kerja')->get();
+        $data = DB::table('dokumen')
+            ->select('dokumen.*','users.name as user_command')
+            ->leftJoin('users','users.id','dokumen.command_id')
+            ->whereNull('dokumen.deleted_at')->where('jenis_dokumen_id',$id)->where('jenis_dokumen','gambar_kerja')->get();
         $data_dokumen_proses = DB::table('dokumen_proses_gambar_kerja')
         ->leftJoin('users','users.id','dokumen_proses_gambar_kerja.created_by')
         ->leftJoin('departement','departement.departement_id','dokumen_proses_gambar_kerja.departement_id')
         ->whereNull('dokumen_proses_gambar_kerja.deleted_at')
         ->get();
         $departement = DB::table('departement')->whereNull('departement.deleted_at')->get();
-        return view('gambar_kerja.dokumen', compact('data','id','departement','data_dokumen_proses','uraian_gambar_kerja'));
+
+        $idnya = '';
+        foreach($data as $item){
+            $idnya .= $item->dokumen_id.',';
+        }
+        $idnya = substr($idnya,0,-1);
+        // dd($idnya);
+        $data2 = DB::select("SELECT command.isi_command,users.name,command.dokumen_id FROM command LEFT JOIN users ON command.created_by = users.id where dokumen_id IN ('$idnya')");
+        $commandnya = [];
+        foreach($data2 as $item){
+            $commandnya[$item->dokumen_id][] = [
+                'isi_command' => $item->isi_command,
+                'user' => $item->name
+            ];
+        }
+        return view('gambar_kerja.dokumen', compact('data','id','departement','data_dokumen_proses','uraian_gambar_kerja','commandnya'));
     }
 
     public function store_doc(Request $request){

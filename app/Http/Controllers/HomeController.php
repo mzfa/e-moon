@@ -57,4 +57,15 @@ class HomeController extends Controller
         session(['password_detail' => $request->password_detail]);
         return Redirect::back()->with(['success' => 'Password Berhasil di buat!']);
     }
+
+    public function doc_command(Request $request){
+        $data = [
+            'created_by' => Auth::user()->id,
+            'created_at' => now(),
+            'dokumen_id' => $request->id,
+            'isi_command' => $request->command,
+        ];
+        DB::table('command')->insert($data);
+        return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
+    }
 }

@@ -137,7 +137,21 @@ class DokAdmController extends Controller
     {
         $data = DB::table('dokumen')->whereNull('dokumen.deleted_at')->where('jenis_dokumen_id',$id)->where('jenis_dokumen','dokumen_administrasi')->get();
         $departement = DB::table('departement')->whereNull('departement.deleted_at')->where('departement_id',$id)->get();
-        return view('dokumen_administrasi.dokumen', compact('data','id','departement'));
+        $idnya = '';
+        foreach($data as $item){
+            $idnya .= $item->dokumen_id.',';
+        }
+        $idnya = substr($idnya,0,-1);
+        // dd($idnya);
+        $data2 = DB::select("SELECT command.isi_command,users.name,command.dokumen_id FROM command LEFT JOIN users ON command.created_by = users.id where dokumen_id IN ('$idnya')");
+        $commandnya = [];
+        foreach($data2 as $item){
+            $commandnya[$item->dokumen_id][] = [
+                'isi_command' => $item->isi_command,
+                'user' => $item->name
+            ];
+        }
+        return view('dokumen_administrasi.dokumen', compact('data','id','departement','commandnya'));
     }
 
     public function store_doc(Request $request){

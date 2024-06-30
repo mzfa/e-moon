@@ -240,7 +240,22 @@ class IjinPelaksanaanController extends Controller
         ->whereNull('dokumen_proses_ijin_pelaksanaan.deleted_at')
         ->get();
         $departement = DB::table('departement')->whereNull('departement.deleted_at')->get();
-        return view('ijin_pelaksanaan.dokumen', compact('data','id','departement','data_dokumen_proses'));
+
+        $idnya = '';
+        foreach($data as $item){
+            $idnya .= $item->dokumen_id.',';
+        }
+        $idnya = substr($idnya,0,-1);
+        // dd($idnya);
+        $data2 = DB::select("SELECT command.isi_command,users.name,command.dokumen_id FROM command LEFT JOIN users ON command.created_by = users.id where dokumen_id IN ('$idnya')");
+        $commandnya = [];
+        foreach($data2 as $item){
+            $commandnya[$item->dokumen_id][] = [
+                'isi_command' => $item->isi_command,
+                'user' => $item->name
+            ];
+        }
+        return view('ijin_pelaksanaan.dokumen', compact('data','id','departement','data_dokumen_proses','commandnya'));
     }
 
     public function store_doc(Request $request){

@@ -172,6 +172,7 @@
                                             <th>Nama Dokumen</th>
                                             <th>Link</th>
                                             <th>Keterangan</th>
+                                            <th>Command</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>
@@ -179,10 +180,25 @@
                                         @foreach ($data as $item)
                                             <tr>
                                                 <td><a target="_blank"
-                                                        href="{{ url('dokumen/surat/' . $item->nama_file) }}">{{ $item->nama_file ?? '-' }}</a>
+                                                        href="{{ url('dokumen/notulen/' . $item->nama_file) }}">{{ $item->nama_file ?? '-' }}</a>
                                                 </td>
                                                 <td>{{ $item->link_dokumen ?? '-' }}</td>
                                                 <td>{{ $item->keterangan }}</td>
+                                                <td>
+                                                    <form action="{{ url('doc_command/') }}" method="post">
+                                                        <div class="form-group">
+                                                            @csrf
+                                                            <input type="hidden" name="id" value="{{ $item->dokumen_id }}">
+                                                            <input type="text" class="form-control mb-1" name="command">
+                                                            <button type="submit" class="btn btn-success btn-block w-100 mb-2"><i class="bi bi-chat-right-dots"></i> &nbsp; Submit</button>
+                                                            @isset($commandnya[$item->dokumen_id])
+                                                                @foreach ($commandnya[$item->dokumen_id] as $command)
+                                                                    <em>{{ $command['user'].' : '. $command['isi_command'] }}</em><br>
+                                                                @endforeach
+                                                            @endisset
+                                                        </div>
+                                                    </form>
+                                                </td>
                                                 <td>
                                                     <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')"
                                                         href="{{ url('notulen/delete_doc/' . Crypt::encrypt($item->dokumen_id)) }}"

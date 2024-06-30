@@ -101,9 +101,7 @@
                                             value="{{ $data->waktu_pelaksanaan_berakhir }}" disabled>
                                     </div>
                                 </div>
-                                <iframe src="{{ $data->lokasi }}" width="800" height="600" style="border:0;"
-                                    allowfullscreen="" loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                <?= $data->lokasi ?>
                             </div>
 
                         </div>
