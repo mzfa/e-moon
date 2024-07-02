@@ -38,47 +38,49 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body table-responsive">
                             <h5 class="card-title">Surat Menyurat <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal" data-bs-target="#basicModal">
                                     <i class="bi bi-plus"></i> Tambah
                                 </button></h5>
 
                             <!-- Table with stripped rows -->
-                            <table class="table" id="table-1">
-                                <thead>
-                                    <tr>
-                                        <th>No Surat</th>
-                                        <th>Kategori</th>
-                                        <th>Perihal Surat</th>
-                                        <th>Tanggal Surat</th>
-                                        <th>Penerbit</th>
-                                        <th>Tujuan</th>
-                                        <th>#</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $item)
+                            <div class="table-responsive">
+                                <table class="table" id="table-1">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $item->no_surat }}</td>
-                                            <td>{{ $item->keterangan_kategori_surat }}</td>
-                                            <td>{{ $item->perihal_surat }}</td>
-                                            <td>{{ $item->tanggal_surat }}</td>
-                                            <td>{{ $item->penerbitnya }}</td>
-                                            <td>{{ $item->tujuannya }}</td>
-                                            <td>
-                                                <a onclick="return dokumen({{ $item->surat_menyurat_id }})"
-                                                    class="btn text-white btn-secondary"><i class="bi bi-book"></i></a>
-                                                <a onclick="return edit({{ $item->surat_menyurat_id }})"
-                                                    class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
-                                                <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')"
-                                                    href="{{ url('surat_menyurat/delete/' . Crypt::encrypt($item->surat_menyurat_id)) }}"
-                                                    class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
-                                            </td>
+                                            <th>No Surat</th>
+                                            <th>Kategori</th>
+                                            <th>Perihal Surat</th>
+                                            <th>Tanggal Surat</th>
+                                            <th>Penerbit</th>
+                                            <th>Tujuan</th>
+                                            <th>#</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($data as $item)
+                                            <tr>
+                                                <td>{{ $item->no_surat }}</td>
+                                                <td>{{ $item->keterangan_kategori_surat }}</td>
+                                                <td>{{ $item->perihal_surat }}</td>
+                                                <td>{{ $item->tanggal_surat }}</td>
+                                                <td>{{ $item->penerbitnya }}</td>
+                                                <td>{{ $item->tujuannya }}</td>
+                                                <td>
+                                                    <a onclick="return dokumen({{ $item->surat_menyurat_id }})"
+                                                        class="btn text-white btn-secondary"><i class="bi bi-book"></i></a>
+                                                    <a onclick="return edit({{ $item->surat_menyurat_id }})"
+                                                        class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
+                                                    <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')"
+                                                        href="{{ url('surat_menyurat/delete/' . Crypt::encrypt($item->surat_menyurat_id)) }}"
+                                                        class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             <!-- End Table with stripped rows -->
                         </div>
                     </div>

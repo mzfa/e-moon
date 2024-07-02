@@ -160,7 +160,7 @@
                         </div><!-- End Reports -->
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <a href="">
                                         <div class="card card-body" style="height: 80% !important;">
                                             <center>
@@ -169,7 +169,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <a href="https://accounts.autodesk.com/logon?resume=%2Fas%2FL4bKEZXdEn%2Fresume%2Fas%2Fauthorization.ping&spentity=null#username" target="_blank">
                                         <div class="card card-body" style="height: 80% !important;"">
                                             <center>

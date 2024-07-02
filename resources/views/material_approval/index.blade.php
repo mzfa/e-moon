@@ -46,42 +46,44 @@
                             </button></h5>
 
                         <!-- Table with stripped rows -->
-                        <table class="table" id="table-1">
-                            <thead>
-                                <tr>
-                                    <th>No Material Approval</th>
-                                    <th>Meterial</th>
-                                    <th>Bidang</th>
-                                    <th>Revisi Status</th>
-                                    <th>Status Material</th>
-                                    <th>Tanggal Submit</th>
-                                    <th>Tanggal Dikembalikan</th>
-                                    <th>Brand</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $item)
+                        <div class="table-responsive">
+                            <table class="table" id="table-1">
+                                <thead>
                                     <tr>
-                                        <td>{{ $item->no_material_approval }}</td>
-                                        <td>{{ $item->perihal_material }}</td>
-                                        <td>{{ $item->keterangan_bidang_pekerjaan }}</td>
-                                        <td>{{ $item->revisi_status }}</td>
-                                        <td>{{ $item->status_material }}</td>
-                                        <td>{{ $item->tgl_dok_material }}</td>
-                                        <td>{{ $item->tanggal_dikembalikan }}</td>
-                                        <td>{{ $item->brand }}</td>
-                                        <td>
-                                            <a onclick="return dokumen({{ $item->material_approval_id }})"
-                                                class="btn text-white btn-secondary"><i class="bi bi-book"></i></a>
-                                            <a onclick="return edit({{ $item->material_approval_id }})"
-                                                class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
-                                            <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')" href="{{ url('material_approval/delete/' . Crypt::encrypt($item->material_approval_id)) }}" class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
-                                        </td>
+                                        <th>No Material Approval</th>
+                                        <th>Meterial</th>
+                                        <th>Bidang</th>
+                                        <th>Revisi Status</th>
+                                        <th>Status Material</th>
+                                        <th>Tanggal Submit</th>
+                                        <th>Tanggal Dikembalikan</th>
+                                        <th>Brand</th>
+                                        <th>#</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $item)
+                                        <tr>
+                                            <td>{{ $item->no_material_approval }}</td>
+                                            <td>{{ $item->perihal_material }}</td>
+                                            <td>{{ $item->keterangan_bidang_pekerjaan }}</td>
+                                            <td>{{ $item->revisi_status }}</td>
+                                            <td>{{ $item->status_material }}</td>
+                                            <td>{{ $item->tgl_dok_material }}</td>
+                                            <td>{{ $item->tanggal_dikembalikan }}</td>
+                                            <td>{{ $item->brand }}</td>
+                                            <td>
+                                                <a onclick="return dokumen({{ $item->material_approval_id }})"
+                                                    class="btn text-white btn-secondary"><i class="bi bi-book"></i></a>
+                                                <a onclick="return edit({{ $item->material_approval_id }})"
+                                                    class="btn text-white btn-warning"><i class="bi bi-pen"></i></a>
+                                                <a onclick="return confirm('Apakah anda yakin ini akan di hapus?')" href="{{ url('material_approval/delete/' . Crypt::encrypt($item->material_approval_id)) }}" class="btn text-white btn-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- End Table with stripped rows -->
                     </div>
                 </div>

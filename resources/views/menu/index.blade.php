@@ -39,7 +39,7 @@
                 <div class="col-lg-12">
 
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body table-responsive">
                             <h5 class="card-title">Menu <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal" data-bs-target="#basicModal">
                                     <i class="bi bi-plus"></i> Tambah
