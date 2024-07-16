@@ -14,10 +14,13 @@ class DokAdmController extends Controller
 {
     public function index()
     {
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
         $data = DB::table('dokumen_administrasi')
         ->select('dokumen_administrasi.*','kategori_dokumen.keterangan_kategori_dokumen')
         ->join('kategori_dokumen','dokumen_administrasi.kategori_dokumen_id','=','kategori_dokumen.kategori_dokumen_id')
-        ->whereNull('dokumen_administrasi.deleted_at')->get();
+        ->whereNull('dokumen_administrasi.deleted_at')->where('dokumen_administrasi.proyek_id',session('proyek_aktif')['id'])->get();
         $kategori_dokumen = DB::table('kategori_dokumen')->whereNull('kategori_dokumen.deleted_at')->get();
         return view('dokumen_administrasi.index', compact('data','kategori_dokumen'));
     }
@@ -38,6 +41,7 @@ class DokAdmController extends Controller
             'perihal_dokumen' => $request->perihal_dokumen,
             'tanggal_dokumen' => $request->tanggal_dokumen,
             'keterangan' => $request->keterangan,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('dokumen_administrasi')->insert($data);
 
@@ -108,6 +112,7 @@ class DokAdmController extends Controller
             'tanggal_dokumen' => $request->tanggal_dokumen,
             'tanggal_terima_surat' => $request->tanggal_terima_surat,
             'keterangan' => $request->keterangan,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $dokumen_administrasi_id = Crypt::decrypt($request->dokumen_administrasi_id);
         $status_dokumen_administrasi = "Aktif";

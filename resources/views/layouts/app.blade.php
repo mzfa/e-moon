@@ -67,19 +67,16 @@
                 <input type="text" name="query" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form> --}}
+            <b>Proyek Aktif : {{ Session('proyek_aktif')['nama_proyek'] }}</b>
         </div><!-- End Search Bar -->
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
 
                 <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
                 </li><!-- End Search Icon-->
 
                 <li class="nav-item dropdown">
-
                 </li><!-- End Notification Nav -->
 
                 <li class="nav-item dropdown">
@@ -173,6 +170,12 @@
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#proyekModals">
+                                <i class="bi bi-person"></i>
+                                <span>Switch Proyek</span>
+                            </a>
+                        </li>
+                        <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
@@ -193,6 +196,37 @@
         </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
+
+    <div class="modal fade" id="proyekModals" tabindex="-1">
+        <div class="modal-dialog">
+            <form action="{{ url('/ganti_proyek') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Ganti Proyek</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @php
+                            $data_proyek = Session('data_proyek');
+                        @endphp
+                        <select name="proyek" id="" class="form-control">
+                            <option value="">Pilih Proyek</option>
+                            @isset ($data_proyek)
+                                @foreach ($data_proyek as $item)
+                                    <option value="{{ $item->proyek_id }}">{{ $item->nama_proyek }}</option>
+                                @endforeach
+                            @endisset
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- ======= Sidebar ======= -->
     @include('layouts.sidebar')

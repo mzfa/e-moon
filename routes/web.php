@@ -57,6 +57,7 @@ Route::post('/logout', function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::post('/ganti_proyek', [\App\Http\Controllers\HomeController::class, 'ganti_proyek'])->name('ganti_proyek');
     Route::post('/doc_command', [\App\Http\Controllers\HomeController::class, 'doc_command'])->name('doc_command');
     Route::POST('/buat_password', [\App\Http\Controllers\HomeController::class, 'buat_password'])->name('buat_password');
     Route::POST('/ubah_password', [\App\Http\Controllers\HomeController::class, 'ubah_password'])->name('ubah_password');

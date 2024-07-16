@@ -14,7 +14,10 @@ class IjinPelaksanaanController extends Controller
 {
     public function index()
     {
-        $data = DB::table('ijin_pelaksanaan')->leftJoin('bidang_pekerjaan','ijin_pelaksanaan.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('ijin_pelaksanaan.deleted_at')->get();
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
+        $data = DB::table('ijin_pelaksanaan')->leftJoin('bidang_pekerjaan','ijin_pelaksanaan.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('ijin_pelaksanaan.deleted_at')->where('ijin_pelaksanaan.proyek_id',session('proyek_aktif')['id'])->get();
         $bidang = DB::table('bidang_pekerjaan')->whereNull('bidang_pekerjaan.deleted_at')->get();
         return view('ijin_pelaksanaan.index', compact('data','bidang'));
     }
@@ -37,6 +40,7 @@ class IjinPelaksanaanController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_ijin_pelaksanaan' => $request->status_ijin_pelaksanaan,
             'tgl_ijin_pelaksanaan' => $request->tgl_ijin_pelaksanaan,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('ijin_pelaksanaan')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -181,6 +185,7 @@ class IjinPelaksanaanController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_ijin_pelaksanaan' => $request->status_ijin_pelaksanaan,
             'tgl_ijin_pelaksanaan' => $request->tgl_ijin_pelaksanaan,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $ijin_pelaksanaan_id = Crypt::decrypt($request->ijin_pelaksanaan_id);
         DB::table('ijin_pelaksanaan')->where(['ijin_pelaksanaan_id' => $ijin_pelaksanaan_id])->update($data);

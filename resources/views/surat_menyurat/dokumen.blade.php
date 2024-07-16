@@ -43,7 +43,7 @@
                                     <th>Nama Dokumen</th>
                                     <th>Link</th>
                                     <th>Keterangan</th>
-                                    <th>Command</th>
+                                    <th>Comment</th>
                                     <th>#</th>
                                 </tr>
                             </thead>

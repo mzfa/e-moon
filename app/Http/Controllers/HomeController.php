@@ -12,22 +12,42 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $data = DB::select(DB::raw('select
-            progress.progress_id,
-            progress.minggu_ke,
-            progress.start,
-            progress.finish,
-            sum(progress_detail.bobot) as bobot,
-            sum(progress_detail.bobot_rencana) as bobot_rencana,
-            sum(progress_detail.bobot_minggu_ini) as realisasi_mingguan,
-            sum(progress_detail.bobot) - sum(progress_detail.bobot_sd_minggu_ini) as deviasi
-        from
-            progress
-        left join progress_detail on
-            progress_detail.progress_id = progress.progress_id
-        where
-            progress.deleted_at is null group by 
-        progress.progress_id,minggu_ke,start,finish,progress_detail.bobot,progress_detail.bobot_rencana,progress_detail.bobot_minggu_ini'));
+        $proyek_aktif= session('proyek_aktif')['id'];
+        if(session('proyek_aktif')['id'] == 0){
+            $data = DB::select(DB::raw('select
+                progress.progress_id,
+                progress.minggu_ke,
+                progress.start,
+                progress.finish,
+                sum(progress_detail.bobot) as bobot,
+                sum(progress_detail.bobot_rencana) as bobot_rencana,
+                sum(progress_detail.bobot_sd_minggu_ini) as realisasi_mingguan,
+                sum(progress_detail.bobot) - sum(progress_detail.bobot_sd_minggu_ini) as deviasi
+            from
+                progress
+            left join progress_detail on
+                progress_detail.progress_id = progress.progress_id
+            where
+                progress.deleted_at is null group by 
+            progress.progress_id,minggu_ke,start,finish,progress_detail.bobot,progress_detail.bobot_rencana,progress_detail.bobot_minggu_ini'));
+        }else{
+            $data = DB::select(DB::raw("select
+                progress.progress_id,
+                progress.minggu_ke,
+                progress.start,
+                progress.finish,
+                sum(progress_detail.bobot) as bobot,
+                sum(progress_detail.bobot_rencana) as bobot_rencana,
+                sum(progress_detail.bobot_sd_minggu_ini) as realisasi_mingguan,
+                sum(progress_detail.bobot) - sum(progress_detail.bobot_sd_minggu_ini) as deviasi
+            from
+                progress
+            left join progress_detail on
+                progress_detail.progress_id = progress.progress_id
+            where
+                progress.deleted_at is null and progress.proyek_id = '$proyek_aktif' group by 
+            progress.progress_id,minggu_ke,start,finish,progress_detail.bobot,progress_detail.bobot_rencana,progress_detail.bobot_minggu_ini"));
+        }
         // dd($data);
         $indikator1 = '';
         $indikator2 = '';
@@ -44,6 +64,17 @@ class HomeController extends Controller
         return view('home', compact('indikator1','indikator2','keterangan'));
     }
 
+    public function ganti_proyek(Request $request){
+        $proyek = DB::table('proyek')->whereNull('deleted_at')->where('proyek_id',$request->proyek)->first();
+        if(empty($proyek)){
+            return Redirect::back()->with(['error' => 'Anda gagal mengganti proyek!']);
+        }
+        session(['proyek_aktif' => [
+            'id' => $proyek->proyek_id,
+            'nama_proyek' => $proyek->nama_proyek
+        ]]);
+        return Redirect::back()->with(['success' => 'Anda berhasil mengganti proyek!']);
+    }
     public function buat_password(Request $request){
         $pegawai_id = Auth::user()->pegawai_id;
         $request->validate([

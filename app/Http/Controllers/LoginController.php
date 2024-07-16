@@ -86,12 +86,22 @@ class LoginController extends Controller
                 
                 // dd($menu);
                 $user_data = DB::table('pegawai')->where(['pegawai_id' => $check_password->pegawai_id])->first();
+                if($check_password->id == 0){
+                    $data_proyek = DB::table('proyek')->whereNull('deleted_at')->get();
+                }else{
+                    $data_proyek = DB::table('proyek')->join('users','proyek.created_by','users.id')->join('pegawai','users.pegawai_id','pegawai.pegawai_id')->where('pegawai.departement_id',$user_data->departement_id)->whereNull('proyek.deleted_at')->get();
+                }
                 $image = "";
                 if(isset($user_data)){
                     // dd($user_data);
                     $image = asset('dokumen/foto_profile/'.$user_data->foto);
                 }
+                session(['proyek_aktif' => [
+                    'id' => 0,
+                    'nama_proyek' => 'Semua Proyek'
+                ]]);
                 session(['menu' => $menu]);
+                session(['data_proyek' => $data_proyek]);
                 session(['foto_profile' => $image]);
                 Auth::loginUsingId($check_password->id, true);
                 return redirect()->intended('home');

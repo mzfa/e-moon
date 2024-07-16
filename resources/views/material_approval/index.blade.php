@@ -51,7 +51,7 @@
                                 <thead>
                                     <tr>
                                         <th>No Material Approval</th>
-                                        <th>Meterial</th>
+                                        <th>Material</th>
                                         <th>Bidang</th>
                                         <th>Revisi Status</th>
                                         <th>Status Material</th>
@@ -104,11 +104,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">No Meterial Approval</label>
+                        <label for="staticEmail" class="form-label">No Material Approval</label>
                         <input type="text" class="form-control" id="no_material_approval" name="no_material_approval" required>
                     </div>
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">Meterial</label>
+                        <label for="staticEmail" class="form-label">Material</label>
                         <input type="text" class="form-control" id="perihal_material" name="perihal_material" required>
                     </div>
                     <div class="mb-3">

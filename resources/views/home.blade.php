@@ -97,7 +97,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Reports </h5>
+                                    <h5 class="card-title">Kurva S </h5>
 
                                     <!-- Line Chart -->
                                     <div id="reportsChart"></div>
@@ -161,7 +161,7 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a href="">
+                                    <a href="https://www.hik-connect.com/views/login/index.html?jump=1#/login" target="_blank">
                                         <div class="card card-body" style="height: 80% !important;">
                                             <center>
                                                 <img src="{{ asset('assets/img/cctv.png') }}" alt="" style="width: 200px" class="mt-3">
@@ -170,7 +170,7 @@
                                     </a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="https://accounts.autodesk.com/logon?resume=%2Fas%2FL4bKEZXdEn%2Fresume%2Fas%2Fauthorization.ping&spentity=null#username" target="_blank">
+                                    <a href="https://b2.autodesk.com/login?_ga=2.170821480.914496400.1702462562-889765754.1701084963" target="_blank">
                                         <div class="card card-body" style="height: 80% !important;"">
                                             <center>
                                                 <img src="{{ asset('assets/img/bim.png') }}" alt="" style="width: 200px" class="mt-3">

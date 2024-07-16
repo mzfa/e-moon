@@ -14,22 +14,35 @@ class ProgressController extends Controller
 {
     public function index()
     {
-        $data = DB::select(DB::raw('select
-                progress.progress_id,
-                progress.minggu_ke,
-                progress.start,
-                progress.finish,
-                sum(progress_detail.bobot) as bobot,
-                sum(progress_detail.bobot_rencana) as bobot_rencana,
-                sum(progress_detail.bobot_minggu_ini) as realisasi_mingguan,
-                sum(progress_detail.bobot) - sum(progress_detail.bobot_sd_minggu_ini) as deviasi
-            from
-                progress
-            left join progress_detail on
-                progress_detail.progress_id = progress.progress_id
-            where
-                progress.deleted_at is null group by 
-            progress.progress_id,minggu_ke,start,finish,progress_detail.bobot,progress_detail.bobot_rencana,progress_detail.bobot_minggu_ini'));
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
+        $proyek_aktif = session('proyek_aktif')['id'];
+        $data = DB::select(DB::raw("select
+                    progress.progress_id,
+                    progress.minggu_ke,
+                    progress.start,
+                    progress.finish,
+                    sum(progress_detail.bobot) as bobot,
+                    sum(progress_detail.bobot_rencana) as bobot_rencana,
+                    sum(progress_detail.bobot_sd_minggu_ini) as realisasi_mingguan,
+                    sum(progress_detail.bobot) - sum(progress_detail.bobot_sd_minggu_ini) as deviasi
+                from
+                    progress
+                left join progress_detail on
+                    progress_detail.progress_id = progress.progress_id
+                    and progress_detail.deleted_by is null
+                where
+                    progress.deleted_at is null
+                    and progress.proyek_id = '$proyek_aktif'
+                group by
+                    progress.progress_id,
+                    minggu_ke,
+                    start,
+                    finish,
+                    progress_detail.bobot,
+                    progress_detail.bobot_rencana,
+                    progress_detail.bobot_minggu_ini"));
                 // dd($data);
         return view('progress.index', compact('data'));
     }
@@ -45,6 +58,7 @@ class ProgressController extends Controller
             'minggu_ke' => $request->minggu_ke,
             'start' => $request->start,
             'finish' => $request->finish,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('progress')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -175,6 +189,7 @@ class ProgressController extends Controller
             'minggu_ke' => $request->minggu_ke,
             'start' => $request->start,
             'finish' => $request->finish,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $progress_id = Crypt::decrypt($request->progress_id);
         DB::table('progress')->where(['progress_id' => $progress_id])->update($data);

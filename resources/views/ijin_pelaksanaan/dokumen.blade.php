@@ -33,7 +33,7 @@
                                 <h5 class="card-title">Dokumen Proses</h5>
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Material Approval <button type="button" class="btn btn-primary"
+                                        <h5 class="card-title">Dokumen Proses <button type="button" class="btn btn-primary"
                                                 onclick="document.getElementById('tambah_dokumen_proses').style.display = 'block'">
                                                 <i class="bi bi-plus"></i> Tambah
                                             </button></h5>
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                <h5 class="card-title">Dokumen Surat</h5>
+                                <h5 class="card-title">File IPL</h5>
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <h5 class="card-title">Tambah Dokumen</h5>
@@ -181,7 +181,7 @@
                                             <th>Nama Dokumen</th>
                                             <th>Link</th>
                                             <th>Keterangan</th>
-                                            <th>Command</th>
+                                            <th>Comment</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>

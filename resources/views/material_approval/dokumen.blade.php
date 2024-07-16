@@ -19,7 +19,7 @@
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
                                     data-bs-target="#profile-justified" type="button" role="tab"
-                                    aria-controls="profile" aria-selected="false" tabindex="-1"><h2>File Material</h2></button>
+                                    aria-controls="profile" aria-selected="false" tabindex="-1"><h2>File Approval</h2></button>
                             </li>
                             {{-- <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
@@ -30,7 +30,7 @@
                         <div class="tab-content pt-2" id="myTabjustifiedContent">
                             <div class="tab-pane fade show active" id="home-justified" role="tabpanel"
                                 aria-labelledby="home-tab">
-                                <h5 class="card-title">Dokumen Proses</h5>
+                                <h5 class="card-title">Dokumen Approval</h5>
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Material Approval <button type="button" class="btn btn-primary"
@@ -71,7 +71,7 @@
                                                             <input type="number" class="form-control" id="durasi" name="durasi" required>
                                                         </div>
                                                         <div class="col-6 mb-3">
-                                                            <label for="staticEmail" class="form-label">File Material</label>
+                                                            <label for="staticEmail" class="form-label">File Approval</label>
                                                             <input type="file" class="form-control" id="file" name="file" required>
                                                         </div>
                                                         <div class="col-12 mb-3">
@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                <h5 class="card-title">Dokumen Surat</h5>
+                                <h5 class="card-title">File Approval</h5>
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <h5 class="card-title">Tambah Dokumen</h5>
@@ -210,7 +210,7 @@
                                             <th>Nama Dokumen</th>
                                             <th>Link</th>
                                             <th>Keterangan</th>
-                                            <th>Command</th>
+                                            <th>Comment</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>

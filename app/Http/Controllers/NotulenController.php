@@ -14,7 +14,10 @@ class NotulenController extends Controller
 {
     public function index()
     {
-        $data = DB::table('notulen')->whereNull('deleted_at')->get();
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
+        $data = DB::table('notulen')->where('notulen.proyek_id',session('proyek_aktif')['id'])->whereNull('deleted_at')->get();
         $bidang = DB::table('bidang_pekerjaan')->whereNull('bidang_pekerjaan.deleted_at')->get();
         return view('notulen.index', compact('data','bidang'));
     }
@@ -34,6 +37,7 @@ class NotulenController extends Controller
             'tanggal_mulai_rapat' => $request->tanggal_mulai_rapat,
             'tanggal_selesai_rapat' => $request->tanggal_selesai_rapat,
             'tempat' => $request->tempat,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('notulen')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -154,6 +158,7 @@ class NotulenController extends Controller
             'tanggal_mulai_rapat' => $request->tanggal_mulai_rapat,
             'tanggal_selesai_rapat' => $request->tanggal_selesai_rapat,
             'tempat' => $request->tempat,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $notulen_id = Crypt::decrypt($request->notulen_id);
         DB::table('notulen')->where(['notulen_id' => $notulen_id])->update($data);

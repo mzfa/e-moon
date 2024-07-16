@@ -197,7 +197,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                <h5 class="card-title">Dokumen Surat</h5>
+                                <h5 class="card-title">Dokumen Progress</h5>
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <h5 class="card-title">Tambah Dokumen</h5>

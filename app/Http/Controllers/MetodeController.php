@@ -14,7 +14,10 @@ class MetodeController extends Controller
 {
     public function index()
     {
-        $data = DB::table('metode')->leftJoin('bidang_pekerjaan','metode.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('metode.deleted_at')->get();
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
+        $data = DB::table('metode')->leftJoin('bidang_pekerjaan','metode.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('metode.deleted_at')->where('metode.proyek_id',session('proyek_aktif')['id'])->get();
         $bidang = DB::table('bidang_pekerjaan')->whereNull('bidang_pekerjaan.deleted_at')->get();
         return view('metode.index', compact('data','bidang'));
     }
@@ -36,6 +39,7 @@ class MetodeController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_metode' => $request->status_metode,
             'tgl_metode' => $request->tgl_metode,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('metode')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -180,6 +184,7 @@ class MetodeController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_metode' => $request->status_metode,
             'tgl_metode' => $request->tgl_metode,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $metode_id = Crypt::decrypt($request->metode_id);
         DB::table('metode')->where(['metode_id' => $metode_id])->update($data);

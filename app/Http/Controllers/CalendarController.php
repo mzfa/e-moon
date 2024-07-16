@@ -14,8 +14,11 @@ class CalendarController extends Controller
 {
     public function index()
     {
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
         $data = DB::table('departement')->whereNull('departement.deleted_at')->get();
-        $event = DB::table('event')->whereNull('event.deleted_at')->get();
+        $event = DB::table('event')->where('event.proyek_id',session('proyek_aktif')['id'])->whereNull('event.deleted_at')->get();
         $eventnya = [];
         foreach($event as $item){
             $eventnya[] = [
@@ -36,19 +39,20 @@ class CalendarController extends Controller
             'tanggal_awal' => ['required'],
             'tanggal_akhir' => ['required'],
         ]);
-        $kehadiran = '|';
-        foreach($request->kehadiran as $item){
-            $kehadiran .= $item.'|';
-        }
+        // $kehadiran = '|';
+        // foreach($request->kehadiran as $item){
+        //     $kehadiran .= $item.'|';
+        // }
         // dd($kehadiran);
         $data = [
             'created_by' => Auth::user()->id,
             'created_at' => now(),
             'agenda' => $request->agenda,
             'tempat_event' => $request->tempat_event,
-            'kehadiran' => $kehadiran,
+            // 'kehadiran' => $kehadiran,
             'tanggal_awal' => $request->tanggal_awal,
             'tanggal_akhir' => $request->tanggal_akhir,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('event')->insert($data);
 
@@ -81,6 +85,7 @@ class CalendarController extends Controller
             'tempat_event' => $request->tempat_event,
             'tanggal_awal' => $request->tanggal_awal,
             'tanggal_akhir' => $request->tanggal_akhir,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $event_id = Crypt::decrypt($request->event_id);
         $status_event = "Aktif";

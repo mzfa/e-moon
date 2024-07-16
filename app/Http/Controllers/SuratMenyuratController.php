@@ -14,12 +14,15 @@ class SuratMenyuratController extends Controller
 {
     public function index()
     {
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
         $data = DB::table('surat_menyurat')
         ->select('surat_menyurat.*','kategori_surat.keterangan_kategori_surat','penerbit.nama_departement as penerbitnya','tujuan.nama_departement as tujuannya')
         ->join('kategori_surat','surat_menyurat.kategori_surat_id','=','kategori_surat.kategori_surat_id')
         ->join('departement as penerbit','surat_menyurat.penerbit_id','=','penerbit.departement_id')
         ->join('departement as tujuan','surat_menyurat.tujuan_id','=','tujuan.departement_id')
-        ->whereNull('surat_menyurat.deleted_at')->get();
+        ->whereNull('surat_menyurat.deleted_at')->where('surat_menyurat.proyek_id',session('proyek_aktif')['id'])->get();
         // dd($data);
         $kategori_surat = DB::table('kategori_surat')->whereNull('kategori_surat.deleted_at')->get();
         $departement = DB::table('departement')->whereNull('departement.deleted_at')->get();
@@ -46,6 +49,7 @@ class SuratMenyuratController extends Controller
             'tanggal_terima_surat' => $request->tanggal_terima_surat,
             'penerbit_id' => $request->penerbit_id,
             'tujuan_id' => $request->tujuan_id,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('surat_menyurat')->insert($data);
 
@@ -135,6 +139,7 @@ class SuratMenyuratController extends Controller
             'tanggal_terima_surat' => $request->tanggal_terima_surat,
             'penerbit_id' => $request->penerbit_id,
             'tujuan_id' => $request->tujuan_id,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $surat_menyurat_id = Crypt::decrypt($request->surat_menyurat_id);
         $status_surat_menyurat = "Aktif";

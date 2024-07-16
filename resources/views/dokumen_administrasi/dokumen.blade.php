@@ -6,7 +6,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Dokumen Surat</h5>
+                        <h5 class="card-title">Dokumen Administrasi</h5>
                         <div class="card mt-3">
                             <div class="card-body">
                                 <h5 class="card-title">Tambah Dokumen</h5>
@@ -43,7 +43,7 @@
                                     <th>Nama Dokumen</th>
                                     <th>Link</th>
                                     <th>Keterangan</th>
-                                    <th>Command</th>
+                                    <th>Comment</th>
                                     <th>#</th>
                                 </tr>
                             </thead>

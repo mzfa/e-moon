@@ -14,7 +14,10 @@ class MaterialApprovalController extends Controller
 {
     public function index()
     {
-        $data = DB::table('material_approval')->leftJoin('bidang_pekerjaan','material_approval.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('material_approval.deleted_at')->get();
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
+        $data = DB::table('material_approval')->leftJoin('bidang_pekerjaan','material_approval.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('material_approval.deleted_at')->where('material_approval.proyek_id', session('proyek_aktif')['id'])->get();
         $bidang = DB::table('bidang_pekerjaan')->whereNull('bidang_pekerjaan.deleted_at')->get();
         return view('material_approval.index', compact('data','bidang'));
     }
@@ -40,6 +43,7 @@ class MaterialApprovalController extends Controller
             'tgl_dok_material' => $request->tgl_dok_material,
             'brand' => $request->brand,
             'tanggal_dikembalikan' => $request->tanggal_dikembalikan,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('material_approval')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -207,6 +211,7 @@ class MaterialApprovalController extends Controller
             'status_material' => $request->status_material,
             'brand' => $request->brand,
             'tanggal_dikembalikan' => $request->tanggal_dikembalikan,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $material_approval_id = Crypt::decrypt($request->material_approval_id);
         DB::table('material_approval')->where(['material_approval_id' => $material_approval_id])->update($data);

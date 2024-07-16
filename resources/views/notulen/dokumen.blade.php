@@ -19,7 +19,7 @@
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
                                     data-bs-target="#profile-justified" type="button" role="tab"
-                                    aria-controls="profile" aria-selected="false" tabindex="-1"><h2>File Material</h2></button>
+                                    aria-controls="profile" aria-selected="false" tabindex="-1"><h2>File Notulen</h2></button>
                             </li>
                             {{-- <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                                <h5 class="card-title">Dokumen Surat</h5>
+                                <h5 class="card-title">File Notulen</h5>
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <h5 class="card-title">Tambah Dokumen</h5>
@@ -172,7 +172,7 @@
                                             <th>Nama Dokumen</th>
                                             <th>Link</th>
                                             <th>Keterangan</th>
-                                            <th>Command</th>
+                                            <th>Comment</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>

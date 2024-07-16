@@ -14,7 +14,10 @@ class GambarKerjaController extends Controller
 {
     public function index()
     {
-        $data = DB::table('gambar_kerja')->leftJoin('bidang_pekerjaan','gambar_kerja.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('gambar_kerja.deleted_at')->get();
+        if(session('proyek_aktif')['id'] == 0){
+            return Redirect::back()->with(['error' => 'Anda belum memilih proyek!']);
+        }
+        $data = DB::table('gambar_kerja')->leftJoin('bidang_pekerjaan','gambar_kerja.bidang_pekerjaan_id','bidang_pekerjaan.bidang_pekerjaan_id')->whereNull('gambar_kerja.deleted_at')->where('gambar_kerja.proyek_id',session('proyek_aktif')['id'])->get();
         $bidang = DB::table('bidang_pekerjaan')->whereNull('bidang_pekerjaan.deleted_at')->get();
         return view('gambar_kerja.index', compact('data','bidang'));
     }
@@ -37,6 +40,7 @@ class GambarKerjaController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_gambar_kerja' => $request->status_gambar_kerja,
             'tgl_gambar_kerja' => $request->tgl_gambar_kerja,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         DB::table('gambar_kerja')->insert($data);
         return Redirect::back()->with(['success' => 'Data Berhasil Di Simpan!']);
@@ -249,6 +253,7 @@ class GambarKerjaController extends Controller
             'revisi_status' => $request->revisi_status,
             'status_gambar_kerja' => $request->status_gambar_kerja,
             'tgl_gambar_kerja' => $request->tgl_gambar_kerja,
+            'proyek_id' => session('proyek_aktif')['id'],
         ];
         $gambar_kerja_id = Crypt::decrypt($request->gambar_kerja_id);
         DB::table('gambar_kerja')->where(['gambar_kerja_id' => $gambar_kerja_id])->update($data);
