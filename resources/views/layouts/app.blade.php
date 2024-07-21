@@ -62,12 +62,12 @@
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        <div class="search-bar">
+        <div class="">
             {{-- <form class="search-form d-flex align-items-center" method="POST" action="#">
                 <input type="text" name="query" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form> --}}
-            <b>Proyek Aktif : {{ Session('proyek_aktif')['nama_proyek'] }}</b>
+            &nbsp;<b>Proyek Aktif : {{ Session('proyek_aktif')['nama_proyek'] }}</b>
         </div><!-- End Search Bar -->
 
         <nav class="header-nav ms-auto">

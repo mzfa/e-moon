@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,28 @@ class HomeController extends Controller
 {
     public function index()
     {
+        if(empty(session('proyek_aktif'))){
+            return Redirect::to('login')->with(['error' => 'Session anda sudah habis!']);
+        }
         $proyek_aktif= session('proyek_aktif')['id'];
+        $proyek = DB::table('proyek')->where('proyek_id',$proyek_aktif)->first();
+
+        // selisih waktu
+        $tgl_awal = Carbon::parse($proyek->waktu_pelaksanaan_mulai ?? 0);
+        $tgl_akhir = Carbon::parse($proyek->waktu_pelaksanaan_berakhir ?? 0);
+        $tgl_sekarang = Carbon::parse(date('Y-m-d'));
+        if(strtotime($tgl_sekarang) >= strtotime($tgl_awal) && strtotime($tgl_sekarang) <= strtotime($tgl_akhir)){
+            $hari_dilewati = $tgl_awal->diffInDays(now());
+            $hari_belum_dilewati = now()->diffInDays($tgl_akhir ?? 0);
+        }else{
+            $hari_dilewati = $tgl_awal->diffInDays($tgl_akhir ?? 0);
+            $hari_belum_dilewati = 0;
+        }
+        echo $tgl_awal;
+        // dd($hari_dilewati);
+
+        $hse = DB::select("SELECT sum(manhours) as manhours,sum(first_aid_injury) as first_aid_injury,sum(medical_treatment) as medical_treatment,sum(fatality) as fatality  FROM hse WHERE proyek_id = '$proyek_aktif'");
+        // dd($hse);
         if(session('proyek_aktif')['id'] == 0){
             $data = DB::select(DB::raw('select
                 progress.progress_id,
@@ -61,7 +83,7 @@ class HomeController extends Controller
         $indikator1 = substr($indikator1, 0, -1);
         $indikator2 = substr($indikator2, 0, -1);
         $keterangan = substr($keterangan, 0, -1);
-        return view('home', compact('indikator1','indikator2','keterangan'));
+        return view('home', compact('indikator1','indikator2','keterangan','hse','hari_dilewati','hari_belum_dilewati'));
     }
 
     public function ganti_proyek(Request $request){

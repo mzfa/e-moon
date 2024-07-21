@@ -50,6 +50,15 @@ class HakAksesController extends Controller
         }
         return view('hakakses.modul_akses', compact('data_hakakses','menu'));
     }
+    public function akses_proyek($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data_hakakses = DB::select("SELECT * FROM hakakses WHERE hakakses_id='$id'");
+        $menu = [];
+        $data = DB::table('proyek')->whereNull('deleted_at')->get();
+        // dd($data_hakakses);
+        return view('hakakses.akses_proyek', compact('data_hakakses','data','id'));
+    }
     public function modul_akses_store(Request $request){
         $menu_id = '';
         $hakakses_id = $request->hakakses_id;
@@ -58,6 +67,16 @@ class HakAksesController extends Controller
         }
         // dd($menu_id);
         DB::table('hakakses')->where('hakakses_id', $hakakses_id)->update(['menu_id' => $menu_id]);
+        return redirect('hakakses')->with(['success' => 'Data Berhasil Di Simpan!']);
+    }
+    public function akses_proyek_store(Request $request){
+        $proyek_id = '';
+        $hakakses_id = $request->hakakses_id;
+        foreach($request->proyek_id as $item){
+            $proyek_id .= $item.",";
+        }
+        // dd($request);
+        DB::table('hakakses')->where('hakakses_id', $hakakses_id)->update(['proyek_id' => $proyek_id]);
         return redirect('hakakses')->with(['success' => 'Data Berhasil Di Simpan!']);
     }
 

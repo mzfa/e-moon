@@ -17,6 +17,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\DokAdmController;
 use App\Http\Controllers\GambarKerjaController;
+use App\Http\Controllers\HSEController;
 use App\Http\Controllers\IjinPelaksanaanController;
 use App\Http\Controllers\JenisPekerjaanController;
 use App\Http\Controllers\KategoriDokumenController;
@@ -73,6 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/hakakses/delete/{id}', 'delete');
         Route::get('/hakakses/modul_akses/{id}', 'modul_akses');
         Route::post('/hakakses/modul_akses', 'modul_akses_store');
+        Route::get('/hakakses/akses_proyek/{id}', 'akses_proyek');
+        Route::post('/hakakses/akses_proyek', 'akses_proyek_store');
         Route::post('/hakakses/store', 'store');
         Route::post('/hakakses/update', 'update');
     });
@@ -141,6 +144,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/bidang_pekerjaan/update', 'update');
         Route::get('/bidang_pekerjaan/edit/{id}', 'edit');
         Route::get('/bidang_pekerjaan/delete/{id}', 'delete');
+    });
+    Route::controller(HSEController::class)->middleware('cek_login:hse.index')->group(function () {
+        Route::get('/hse', 'index')->name('hse.index');
+        Route::post('/hse/store', 'store');
+        Route::post('/hse/update', 'update');
+        Route::get('/hse/edit/{id}', 'edit');
+        Route::get('/hse/delete/{id}', 'delete');
     });
     Route::controller(KategoriDokumenController::class)->middleware('cek_login:kategori_dokumen.index')->group(function () {
         Route::get('/kategori_dokumen', 'index')->name('kategori_dokumen.index');

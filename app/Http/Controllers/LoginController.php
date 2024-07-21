@@ -89,7 +89,8 @@ class LoginController extends Controller
                 if($check_password->id == 0){
                     $data_proyek = DB::table('proyek')->whereNull('deleted_at')->get();
                 }else{
-                    $data_proyek = DB::table('proyek')->join('users','proyek.created_by','users.id')->join('pegawai','users.pegawai_id','pegawai.pegawai_id')->where('pegawai.departement_id',$user_data->departement_id)->whereNull('proyek.deleted_at')->get();
+                    $proyek = substr($data_hakakses[0]->proyek_id,0,-1);
+                    $data_proyek = DB::select("SELECT * FROM proyek WHERE proyek_id in ('$proyek') AND deleted_at is null");
                 }
                 $image = "";
                 if(isset($user_data)){

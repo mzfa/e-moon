@@ -55,8 +55,66 @@
                 <!-- Left side columns -->
                 <div class="col-lg-12">
                     <div class="row">
+                        <div class="col-xxl-3 col-md-3 ">
+                            <div class="card info-card revenue-card bg-secondary">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">MANHOURS</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="ps-3">
+                                            <h6 class="text-white">{{ $hse[0]->manhours ?? 0 }} </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 ">
+                            <div class="card info-card revenue-card bg-success">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">FIRST AID INJURY</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="ps-3">
+                                            <h6 class="text-white">{{ $hse[0]->first_aid_injury ?? 0 }} </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 ">
+                            <div class="card info-card revenue-card bg-warning">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">MEDICAL TREATMENT INJURY</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="ps-3">
+                                            <h6 class="text-white">{{ $hse[0]->medical_treatment ?? 0 }} </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 ">
+                            <div class="card info-card revenue-card bg-danger">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">FATALITY</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="ps-3">
+                                            <h6 class="text-white">{{ $hse[0]->fatality ?? 0 }} </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- Sales Card -->
-                        <div class="col-xxl-6 col-md-6">
+                        <div class="col-xxl-3 col-md-3">
                             <div class="card info-card sales-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Rencana</h5>
@@ -75,7 +133,7 @@
                         </div><!-- End Sales Card -->
 
                         <!-- Revenue Card -->
-                        <div class="col-xxl-6 col-md-6">
+                        <div class="col-xxl-3 col-md-3">
                             <div class="card info-card revenue-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Realisasi</h5>
@@ -87,6 +145,41 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{ $realisasi[$key2] ?? 0 }} %</h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- End Revenue Card -->
+                        <div class="col-xxl-3 col-md-3">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Hari dilewatkan</h5>
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="d-flex align-items-center justify-content-center">
+                                            <br>
+                                        </div>
+                                        <div class="ps-3 mt-3">
+                                            <h6>{{ $hari_dilewati ?? 0 }} Hari</h6>
+                                            <div class="mt-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- End Sales Card -->
+
+                        <!-- Revenue Card -->
+                        <div class="col-xxl-3 col-md-3">
+                            <div class="card info-card revenue-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sisa Hari</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="ps-3 mt-3">
+                                            <h6>{{ $hari_belum_dilewati ?? 0 }} Hari</h6>
+                                            <div class="mt-3"></div>
                                         </div>
                                     </div>
                                 </div>
